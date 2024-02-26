@@ -17,6 +17,10 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
+//        if(! $request->hasSession() || $request->user()){
+//            return $next($request);
+//        }
+
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
