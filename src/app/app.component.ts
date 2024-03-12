@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { setupCounter } from '../../../01-typescript-intro/src/counter';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = '02-bases';
+  
 }

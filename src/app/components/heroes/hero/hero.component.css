@@ -1,0 +1,14 @@
+tr,
+td{
+  border: 1px solid black;
+}
+
+td,
+dd{
+  padding: 1rem !important;
+  font-weight: bold;
+}
+
+dd{
+  font-size: 2rem;
+}
