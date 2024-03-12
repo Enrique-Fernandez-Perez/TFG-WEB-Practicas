@@ -1,0 +1,13 @@
+#sidebar{
+  /* height: fit-content; */
+  /* height: --web-content-fill; */
+  height: 100vh;
+  width: 250px;
+}
+
+hr
+{
+  background-color: turquoise;
+  height: 1vh;
+  opacity: 1;
+}

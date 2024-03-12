@@ -1,0 +1,9 @@
+<h5>Buscar:</h5>
+<input type="text" class="form-control" placeholder="Buscar gifs..."
+(keyup.enter)="searchTag()" #txtTagInput>
+
+<div class="d-flex justify-content-center p-3">
+  <select class="form-control w-25 text-center"  (change)="chanceResult()" #numResultOption>
+    <option name="value" *ngFor="let value of options" value="{{value}}">{{value}}</option>
+  </select>
+</div>

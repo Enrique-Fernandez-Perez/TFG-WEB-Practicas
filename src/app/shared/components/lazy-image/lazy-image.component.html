@@ -1,0 +1,23 @@
+<p>lazy-image works!</p>
+<!-- <img class="card-img-top" [src]="gif.images.downsized_large.url" [alt]="gif.title"> -->
+
+<div class="d-flex justify-content-center">
+
+  <img
+    (load)="onLoad()"
+    [src]="url"
+    [alt]="alt"
+    class="card-img-top animate__animated animate__fadeIn"
+    [ngStyle]="{display : hasLoaded ? '' : 'none'}"
+    >
+    <!-- [ngStyle]="{visibility: hasLoaded}" -->
+
+
+  <img
+    class="card-img-top m-3"
+    src="assets/ring-loader.svg"
+    height="35"
+    width="35"
+    *ngIF="!hasLoaded"
+  >
+</div>
