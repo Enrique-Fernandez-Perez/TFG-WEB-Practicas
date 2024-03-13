@@ -17,10 +17,22 @@ export class CountriesService {
     byCapital: {term:'',countries:[]},
     byCountries: {term:'',countries:[]},
     byRegion: {region:'',countries:[]},
-    // countries: [],
   }
 
-  constructor(private http : HttpClient ) { }
+  constructor(private http : HttpClient ) {
+    this.loadToLocalStorage();
+  }
+
+  private saveToLocalStorage(){
+    localStorage.setItem('cacheStore', JSON.stringify(this.cacheStore));
+  }
+
+  private loadToLocalStorage(){
+    if(!localStorage.getItem('cacheStore')){
+      return;
+    }
+    this.cacheStore = JSON.parse(localStorage.getItem('cacheStore')!);
+  }
 
   private getCountrisRequest(url : string) : Observable<Country[]>{
     return this.http.get<Country[]>(url)
@@ -34,15 +46,17 @@ export class CountriesService {
     const url = `${this.apiUrl}/capital/${term}`;
     return this.getCountrisRequest(url)
       .pipe(
-        tap(countries => this.cacheStore.byCapital= {term, countries})
-      );
-  }
+        tap(countries => this.cacheStore.byCapital= {term, countries}),
+        tap(() => this.saveToLocalStorage()),
+        );
+      }
 
-  searchCountry(term: string) : Observable<Country[]>{
-    const url = `${this.apiUrl}/name/${term}`;
-    return this.getCountrisRequest(url)
-      .pipe(
-        tap(countries => this.cacheStore.byCountries = {term, countries})
+      searchCountry(term: string) : Observable<Country[]>{
+        const url = `${this.apiUrl}/name/${term}`;
+        return this.getCountrisRequest(url)
+        .pipe(
+          tap(countries => this.cacheStore.byCountries = {term, countries}),
+          tap(() => this.saveToLocalStorage()),
       );
   }
 
@@ -51,7 +65,8 @@ export class CountriesService {
     const url = `${this.apiUrl}/region/${region}`;
     return this.getCountrisRequest(url)
       .pipe(
-        tap(countries => this.cacheStore.byRegion = {region, countries})
+        tap(countries => this.cacheStore.byRegion = {region, countries}),
+        tap(() => this.saveToLocalStorage()),
       );
   }
 
@@ -59,7 +74,6 @@ export class CountriesService {
     const url = `${this.apiUrl}/alpha/${code}`;
     return this.http.get<Country[]>(url)
     .pipe(
-      // tap(countries => {if(countries.length > 0){this.cacheStore.countries.push(countries[0])}}),
       map( countries => countries.length > 0 ? countries[0] : null),
       catchError(() =>  of(null))
     );

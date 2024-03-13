@@ -14,13 +14,18 @@ export class CountryPageComponent implements OnInit{
 
   public country ?: Country;
 
-  keysTranslation : string[] = ["ara", "bre", "ces", "cym", "deu", "est", "fin", "fra", "hrv", "hun", "ita", "jpn", "kor", "nld", "per", "pol", "por", "rus", "slk",
-    "spa", "srp", "swe", "tur", "urd", "zho"
-  ];
+  public listTranslations ?: {[key: string]: Translation };
+  public translations : Translation[] = [];
+
+  keysTranslation : string[] = [];
+
+  listLKeysAndTranslations : [string,string][] = [['','']];
 
   constructor(private activatedRoute : ActivatedRoute,
     private countriesService : CountriesService,
-    private router : Router){}
+    private router : Router){
+      this.listLKeysAndTranslations.shift();
+    }
 
   ngOnInit(): void {
     this.activatedRoute.params
@@ -30,7 +35,17 @@ export class CountryPageComponent implements OnInit{
         if(!country){
           return this.router.navigateByUrl('');
         }
+
         this.country = country;
+        this.listTranslations = country.translations;
+
+        for (let key of Object.keys(this.listTranslations)) {
+          this.translations.push(this.listTranslations[key]);
+          this.keysTranslation.push(key);
+
+          this.listLKeysAndTranslations.push([key,this.listTranslations[key].common]);
+
+        }
         return;
       });
   }

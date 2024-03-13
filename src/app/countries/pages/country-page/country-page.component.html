@@ -32,19 +32,55 @@
 
   <div class="row mt-2">
     <div class="col">
-      <h3>Traducciones</h3>
       <div class="d-flex flex-wrap">
-        <span class="badge bg-primary m-1" *ngFor="let key of keysTranslation">
-          {{country.translations[key].common}}
-        </span>
-        <!-- <span class="badge bg-primary m-1">{{country.translations['ara'].common}}</span>
-        <span class="badge bg-primary m-1">{{country.translations['esp'].common}}</span>
-        <span class="badge bg-primary m-1">{{country.translations['ger'].common}}</span>
-        <span class="badge bg-primary m-1">{{country.translations['ara'].common}}</span>
-        <span class="badge bg-primary m-1">{{country.translations['ara'].common}}</span>
-        <span class="badge bg-primary m-1">{{country.translations['ara'].common}}</span>
-        <span class="badge bg-primary m-1">{{country.translations['ara'].common}}</span>
-        <span class="badge bg-primary m-1">{{country.translations['ara'].common}}</span> -->
+
+        <table class="table table-bordered text-center text table-responsive align-middle table-border-2 table-border-dark opacity-100 m-2 p-2">
+          <thead>
+            <tr>
+              <th colspan="2">
+                <h1>Traductions</h1>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <th>
+                <h4>Code Lenguage</h4>
+              </th>
+              <th>
+                <h4>Traduction</h4>
+              </th>
+            </tr>
+
+            <tr *ngFor="let translate of listLKeysAndTranslations">
+              <td>
+                {{translate[0]}}
+              </td>
+              <td>
+                {{translate[1]}}
+              </td>
+            </tr>
+
+            <!-- <tr *ngFor="let key of keysTranslation">
+              <td>
+                {{key}}
+              </td>
+            </tr>
+
+            <tr *ngFor="let translation of translations">
+              <td>
+                {{translation.common}}
+              </td>
+            </tr> -->
+
+          </tbody>
+        </table>
+
+        <!-- <span class="badge bg-primary m-1" *ngFor="let translation of translations">
+          {{translation.common}}
+        </span> -->
 
       </div>
     </div>
