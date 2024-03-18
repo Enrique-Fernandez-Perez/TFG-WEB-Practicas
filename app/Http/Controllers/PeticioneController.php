@@ -125,8 +125,14 @@ class PeticioneController extends Controller
             return response()->json( ["Error" => "Este usuario no tiene permisos para cambiar el estado"], 201);
         }
         $peticion = Peticione::findOrFail($id);
+//        if($request->user()->cannot('cambiarEstado'), $peticion){
+//            return response()->json([''=>''],403);
+//        }
         $peticion-> estado = 'aceptada';
-        $peticion-> save();
+        $resp = $peticion-> save();
+//        if($resp){
+//            return response()->json([''=>''],403);
+//        }
         return $peticion;
     }
 
