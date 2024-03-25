@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Categoria;
 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Support\Facades\Validator;
 
 // use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -60,7 +62,7 @@ class PeticioneController extends Controller
             $user = Auth::user();
             $rol = $user->role_id;
 
-            if($rol === 0 && $peticion->user_id != $user->id){
+            if($rol == 1 && $peticion->user_id != $user->id){
                 return response()->json( ["Error" => "Este usuario no tiene permisos para modificar"], 201);
             }
 
@@ -76,24 +78,69 @@ class PeticioneController extends Controller
     public function store(Request $request)
     {
         try {
-            $this-> validate($request, [
-                'titulo' => 'required|max:255',
-                'descripcion' => 'required',
-                'destinatario' => 'required',
-                'categoria_id' => 'required',
-                // 'file' => 'required',
-            ]);
+            $validator = Validator::make($request->all(),
+                [
+                    'titulo' => 'required|max:255',
+                    'descripcion' => 'required',
+                    'destinatario' => 'required',
+                    'categoria_id' => 'required',
+                    //'file' => 'required',
+                ]);
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 401);
+            }
+            $validator = Validator::make($request->all(),
+                [
+                    'file' => 'required',
+                ]);
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 401);
+            }
+//            return response()->json($peticion,201);
             $input = $request-> all();
+
+            if($file = $request->file('file')){
+                $name = $file->getClientOriginalName();
+                Storage::put($name, file_get_contents($request->file('file')->getRealPath()));
+                $file->move('storage/'. $file);
+                $input['file'] = $name;
+            }
+
             $category = Categoria::findOrFail($request-> input('categoria_id'));
             $user = Auth::user();
-            $peticion = new Peticione($input);
+
+            $peticion = new Peticione();
+
+            $peticion->titulo = $request->input('titulo');
+            $peticion->descripcion = $request->input('descripcion');
+            $peticion->destinatario = $request->input('destinatario');
+//            $peticion->image = $input['file'];
+
             $peticion-> user()-> associate($user);
             $peticion-> categoria()-> associate($category);
             $peticion-> firmantes = 0;
             $peticion-> estado = 'pendiente';
             $peticion-> save();
-        //        return $peticion;
-            return response()->json( $peticion, 201);
+            //        return $peticion;
+
+            $imgdb= new File();
+            $imgdb->name = $input['file'];
+            $imgdb->file_path = 'storage/' . $input['file'];
+            $imgdb->peticione_id = $peticion->id;
+            $imgdb->save();
+
+            return response()->json($peticion,201);
+//            return response()->json( $peticion, 201);
+        }
+        catch (\Exception $exception){
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+    }
+
+    public function categorias(Request $request){
+        try {
+            $categorias = Categoria::all()->load(['id', 'nombre']);
+            return response()->json( $categorias, 200);
         }
         catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
@@ -105,9 +152,17 @@ class PeticioneController extends Controller
         try {
             $peticion = Peticione::findOrFail($id);
             $user = Auth::user();
-            if(!empty($peticion->firmas->where('id', $user->id)[0])){
-                return response()->json( 'El usuario ya ha firmado la peticion');
+
+            $firmas = $peticion->firmas;
+            foreach ($firmas as $firma) {
+                if ($firma->id == $user->id) {
+                    return response()->json(['message' => 'Ya has firmado esta petición'], 403);
+                }
             }
+//            if(!empty($peticion->firmas->where('id', $user->id)[0])){
+////                return response()->json( 'El usuario ya ha firmado la peticion',403);
+//                return response()->json(['message' => 'Ya has firmado esta petición'], 403);
+//            }
             $peticion-> firmas()-> attach($user->id);
             $peticion-> firmantes = $peticion-> firmantes + 1;
             $peticion-> save();
@@ -121,18 +176,21 @@ class PeticioneController extends Controller
 
     public function cambiarEstado(Request $request, $id)
     {
-        if(Auth::user()->role_id === 0){
+        if(Auth::user()->role_id == 0){
             return response()->json( ["Error" => "Este usuario no tiene permisos para cambiar el estado"], 201);
         }
         $peticion = Peticione::findOrFail($id);
+        if(Auth::user()->id != $peticion->user()->id){
+            return response()->json([''=>''],403);
+        }
 //        if($request->user()->cannot('cambiarEstado'), $peticion){
 //            return response()->json([''=>''],403);
 //        }
         $peticion-> estado = 'aceptada';
         $resp = $peticion-> save();
-//        if($resp){
-//            return response()->json([''=>''],403);
-//        }
+        if($resp){
+            return response()->json([''=>''],403);
+        }
         return $peticion;
     }
 
@@ -155,4 +213,17 @@ class PeticioneController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+
+    public function peticionesFirmadas(Request $request)
+    {
+        try {
+            $id = Auth::id();
+            $usuario = User::findOrFail($id);
+            $peticiones = $usuario->firmas;
+            return response()->json( $peticiones, 200);
+        }catch (\Exception $exception){
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+    }
+
 }

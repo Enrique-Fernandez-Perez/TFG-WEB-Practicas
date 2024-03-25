@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::controller(\App\Http\Controllers\PeticioneController::class)->group(function () {
     Route::get('peticiones', 'index');
     Route::get('mispeticiones', 'listmine');
+    Route::get('peticiones/firmadas', 'peticionesFirmadas');
     Route::get('peticiones/{id}', 'show');
+    Route::get('categorias', 'categorias');
     Route::delete('peticiones/{id}', 'delete');
     Route::put('peticiones/firmar/{id}', 'firmar');
     Route::put('peticiones/{id}', 'update');

@@ -11,8 +11,8 @@ class File extends Model
 
     protected $fillable=[
         'name',
-        'file_path',
         'peticione_id',
+        'file_path',
     ];
 
     public function peticione(){

@@ -19,8 +19,8 @@ class Peticione extends Model
 
     //ha sido firmada por
     public function firmas(){
-        //return $this->belongsToMany(User::class,'peticione_user');
-        return $this->belongsToMany("App\Models\User",'peticione_user');
+        return $this->belongsToMany(User::class,'peticione_user');
+//        return $this->belongsToMany("App\Models\User",'peticione_user');
     }
 
     //ha sido creado por el usuario

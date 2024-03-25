@@ -53,7 +53,8 @@ class User extends Authenticatable implements JWTSubject
 
     //Puede firmar
     public function firmas(){
-        return $this->belongsToMany("App\Models\Peticione", "peticione_user");
+        return $this->belongsToMany(Peticione::class, "peticione_user");
+//        return $this->belongsToMany("App\Models\Peticione", "peticione_user");
     }
 
     /**
