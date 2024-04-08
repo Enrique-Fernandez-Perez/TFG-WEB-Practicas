@@ -235,7 +235,8 @@ class PeticioneController extends Controller
 
     public function showImage(Request $req, $id = 20){
         try{
-            $image = File::findOrFail($id);
+            $peticion = Peticione::findOrFail($id);
+            $image = $peticion->files[0];//File::findOrFail($id);
             return  response()->file($image->file_path);
         }
         catch (\Exception $exception) {
