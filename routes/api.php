@@ -29,6 +29,8 @@ Route::controller(\App\Http\Controllers\PeticioneController::class)->group(funct
     Route::put('peticiones/{id}', 'update');
     Route::put('peticiones/estado/{id}', 'cambiarEstado');
     Route::post('peticiones', 'store');
+
+    Route::get('imagen/{id}', 'showImage');
 });
 
 Route::controller(\App\Http\Controllers\AuthController::class)->group(function () {

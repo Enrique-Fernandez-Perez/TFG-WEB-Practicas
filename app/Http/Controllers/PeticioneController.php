@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\Peticione;
 use App\Models\User;
+//use Dotenv\Store\File\Paths;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Categoria;
 
@@ -22,7 +24,7 @@ class PeticioneController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show', 'showImage']]);
     }
 
     public function index(Request $request)
@@ -96,20 +98,22 @@ class PeticioneController extends Controller
             if ($validator->fails()) {
                 return response()->json(['error' => $validator->errors()], 401);
             }
-//            return response()->json($peticion,201);
+//            return response()->json('$peticion',201);
             $input = $request-> all();
 
-            if($file = $request->file('file')){
-                $name = $file->getClientOriginalName();
-                Storage::put($name, file_get_contents($request->file('file')->getRealPath()));
-                $file->move('storage/'. $file);
-                $input['file'] = $name;
-            }
+//            if($file = $request->file('file')){
+//                $name = $file->getClientOriginalName();
+//                Storage::put($name, file_get_contents($request->file('file')->getRealPath()));
+//                $file->move('storage/'. $file);
+//                return response()->json('$peticion',201);
+//                $input['file'] = $name;
+//            }
 
             $category = Categoria::findOrFail($request-> input('categoria_id'));
             $user = Auth::user();
 
             $peticion = new Peticione();
+
 
             $peticion->titulo = $request->input('titulo');
             $peticion->descripcion = $request->input('descripcion');
@@ -121,13 +125,23 @@ class PeticioneController extends Controller
             $peticion-> firmantes = 0;
             $peticion-> estado = 'pendiente';
             $peticion-> save();
-            //        return $peticion;
 
-            $imgdb= new File();
-            $imgdb->name = $input['file'];
-            $imgdb->file_path = 'storage/' . $input['file'];
-            $imgdb->peticione_id = $peticion->id;
-            $imgdb->save();
+
+            $file = $request->file('file');
+            $pid = $peticion->id;
+            $fileModel = new File;
+            $fileModel->peticione_id = $pid;
+            $filename = $pid . '_' . $file->getClientOriginalName();
+            $file->move('storage', $filename);
+            $fileModel->name = $filename;
+            $fileModel->file_path = "storage/" . $filename;
+            $fileModel->save();
+
+//            $imgdb= new File();
+//            $imgdb->name = $input['file'];
+//            $imgdb->file_path = 'storage/' . $input['file'];
+//            $imgdb->peticione_id = $peticion->id;
+//            $imgdb->save();
 
             return response()->json($peticion,201);
 //            return response()->json( $peticion, 201);
@@ -136,6 +150,7 @@ class PeticioneController extends Controller
             return response()->json( ['error'=>$exception->getMessage()], 500);
         }
     }
+
 
     public function categorias(Request $request){
         try {
@@ -202,16 +217,38 @@ class PeticioneController extends Controller
 
             $peticion = Peticione::findOrFail($id);
 
+
             if($rol === 0 && $peticion->user_id != $user->id){
                 return response()->json( ["Error" => "Este usuario no tiene permisos para eleminar"], 201);
             }
 
+            $this->fileDelete($request,$id);
+
             $peticion-> delete();
+//            $peticion-> destroy();
             return response()->json( $peticion, 201);
         }
         catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
+    }
+
+    public function showImage(Request $req, $id = 20){
+        try{
+            $image = File::findOrFail($id);
+            return  response()->file($image->file_path);
+        }
+        catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function fileDelete(Request $req, $peticione_id = null)
+    {
+        $pet = Peticione::findOrFail($peticione_id);
+        $path = $pet->files()->first()->file_path;
+        $file = unlink($path);
+        return $file;
     }
 
     public function peticionesFirmadas(Request $request)
