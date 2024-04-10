@@ -33,6 +33,7 @@ export class AppComponent {
       default:
         return;
     }
+
     this.authService.authStatus();
   });
 }
