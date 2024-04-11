@@ -52,6 +52,7 @@ export class AuthService {
     const tokenLocal = localStorage.getItem('token');
 
     if(!tokenLocal){
+      this.logout();
       return of(false);
     }
 
@@ -88,5 +89,14 @@ export class AuthService {
           return rest;
         }),
       );
+  }
+
+  logout(){
+    const token = localStorage.getItem('token');
+    if(token){
+      localStorage.removeItem('token');
+    }
+    this._currentUser.set(null);
+    this._authStatus.set(AuthStatus.notAuthenticated);
   }
 }
