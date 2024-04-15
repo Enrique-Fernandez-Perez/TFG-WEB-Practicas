@@ -41,14 +41,14 @@ class PeticioneController extends Controller
     public function listMine(Request $request)
     {
         $user = Auth::user();
-        $peticiones = Peticione::all()-> where('user_id', $user->id);
+        $peticiones = Peticione::all()-> where('user_id', $user->id)->load(['user', 'categoria', 'files']);
         return response()->json( $peticiones, 200);
     }
 
     public function show(Request $request, $id)
     {
         try {
-            $peticion = Peticione::findOrFail($id);
+            $peticion = Peticione::findOrFail($id)->load(['user', 'categoria', 'files']);;
             return response()->json( $peticion, 200);
         }
         catch (\Exception $exception){
@@ -233,7 +233,7 @@ class PeticioneController extends Controller
         }
     }
 
-    public function showImage(Request $req, $id = 20){
+    public function showImage(Request $req, $id){
         try{
             $peticion = Peticione::findOrFail($id);
             $image = $peticion->files[0];//File::findOrFail($id);
