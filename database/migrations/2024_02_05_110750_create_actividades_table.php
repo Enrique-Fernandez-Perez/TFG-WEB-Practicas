@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peticiones', function (Blueprint $table) {
+        Schema::create('actividades', function (Blueprint $table) {
             $table->id();
             $table->string('titulo', 255);
             $table->text('descripcion');
-            $table->text('destinatario');
-            $table->integer('firmantes');
-            $table->enum('estado', ['aceptada', 'pendiente']);
-            $table->foreignId('user_id');
-            $table->foreignId('categoria_id');
+            $table->text('organizador');
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            $table->foreignId('user_id')->onDelete('cascade');;
             // $table->string('image', 255, ); No se necesita
             $table->timestamps();
         });

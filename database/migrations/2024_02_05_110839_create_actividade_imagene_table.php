@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peticione_user', function (Blueprint $table) {
-            $table->primary(['user_id','peticione_id']);
+        Schema::create('actividade_imagene', function (Blueprint $table) {
+            $table->primary(['imagene_id','actividade_id']);
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('peticione_id')->unsigned();
+            $table->bigInteger('actividade_id')->unsigned();
             $table->timestamps();
-            $table->foreign('user_id')
+            $table->foreign('imagene_id')
                 ->references('id')
-                ->on('users');
-            $table->foreign('peticione_id')
+                ->on('imagenes')
+                ->onDelete('cascade');
+            $table->foreign('actividade_id')
                 ->references('id')
-                ->on('peticiones');
+                ->on('actividades')
+                ->onDelete('cascade');
         });
     }
 
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peticione_user');
+        Schema::dropIfExists('imagene_user');
     }
 };
