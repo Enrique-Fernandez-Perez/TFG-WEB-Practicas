@@ -26,6 +26,7 @@ Route::controller(\App\Http\Controllers\PeticioneController::class)->group(funct
     Route::get('categorias', 'categorias');
     Route::delete('peticiones/{id}', 'delete');
     Route::put('peticiones/firmar/{id}', 'firmar');
+    Route::put('peticiones/desfirmar/{id}', 'desfirmar');
     Route::put('peticiones/{id}', 'update');
     Route::put('peticiones/estado/{id}', 'cambiarEstado');
     Route::post('peticiones', 'store');

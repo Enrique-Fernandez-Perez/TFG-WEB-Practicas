@@ -30,6 +30,7 @@ class PeticioneController extends Controller
     public function index(Request $request)
     {
         try {
+//            $peticiones = Peticione::all()->paginate(3)->load(['user', 'categoria', 'files']);
             $peticiones = Peticione::all()->load(['user', 'categoria', 'files']);
             return response()->json( $peticiones, 200);
         }
@@ -41,14 +42,15 @@ class PeticioneController extends Controller
     public function listMine(Request $request)
     {
         $user = Auth::user();
-        $peticiones = Peticione::all()-> where('user_id', $user->id)->load(['user', 'categoria', 'files']);
+//        $peticiones = Peticione::all()->where('user_id', $user->id)->paginate(3)->load(['user', 'categoria', 'files']);
+        $peticiones = Peticione::all()->where('user_id', $user->id)->load(['user', 'categoria', 'files']);
         return response()->json( $peticiones, 200);
     }
 
     public function show(Request $request, $id)
     {
         try {
-            $peticion = Peticione::findOrFail($id)->load(['user', 'categoria', 'files']);;
+            $peticion = Peticione::findOrFail($id)->load(['user', 'categoria', 'files']);
             return response()->json( $peticion, 200);
         }
         catch (\Exception $exception){
@@ -224,8 +226,8 @@ class PeticioneController extends Controller
 
             $this->fileDelete($request,$id);
 
-            $peticion-> delete();
-//            $peticion-> destroy();
+//            $peticion-> delete();
+            $peticion-> destroy();
             return response()->json( $peticion, 201);
         }
         catch (\Exception $exception) {
@@ -257,11 +259,49 @@ class PeticioneController extends Controller
         try {
             $id = Auth::id();
             $usuario = User::findOrFail($id);
-            $peticiones = $usuario->firmas;
+//            $peticiones = $usuario->firmas->load(['user', 'categoria', 'files'])->paginate(3);
+            $peticiones = $usuario->firmas->load(['user', 'categoria', 'files']);
             return response()->json( $peticiones, 200);
         }catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
         }
+    }
+
+    public function desfirmar(Request $request, $id)
+    {
+        try {
+            $peticion = Peticione::findOrFail($id);
+            $user = Auth::user();
+
+            $firmas = $peticion->firmas;
+
+            $firmada = false;
+
+            $i = 0;
+
+            foreach ($firmas as $firma) {
+                if ($firma->id == $user->id) {
+                    $firmada = true;
+                }
+            }
+
+            if(!$firmada){
+//                return back()->withError("No has firmado esta petición")->withInput();
+                return response()->json(['message' => 'No has firmado esta petición'], 403);
+            }
+            else
+            {
+                $peticion->firmas()->detach($user->id);
+
+                $peticion->firmantes = $peticion->firmantes - 1;
+                $peticion->save();
+                return response()->json( $peticion, 200);
+            }
+        } catch (\Exception $exception) {
+//            return back()->withError($exception->getMessage())->withInput();
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+        return redirect()->back();
     }
 
 }
