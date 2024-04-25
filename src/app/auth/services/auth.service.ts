@@ -74,8 +74,7 @@ export class AuthService {
         // catchError(err => throwError(() => err.error.message))
       );
   }
-
-
+  
   public getUser( id : string, headers : HttpHeaders) : Observable<User>{
 
     const url = `${this.baseUrl}/auth/user/${ id }`;
