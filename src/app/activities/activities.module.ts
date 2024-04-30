@@ -8,8 +8,10 @@ import { ListComponent } from './users/list/list.component';
 import { ShowComponent } from './users/show/show.component';
 import { IndexComponent } from './pages/index/index.component';
 import { SearchComponent } from './pages/search/search.component';
-import { ImagesComponent } from './users/create/images/images.component';
 import { ListMineComponent } from './users/list-mine/list-mine.component';
+import { ListActivitiesComponent } from './pages/list-activities/list-activities.component';
+import { AddImageComponent } from './users/add-image/add-image.component';
+import { MyIndexComponent } from './users/my-index/my-index.component';
 
 
 @NgModule({
@@ -20,8 +22,10 @@ import { ListMineComponent } from './users/list-mine/list-mine.component';
     ShowComponent,
     IndexComponent,
     SearchComponent,
-    ImagesComponent,
     ListMineComponent,
+    ListActivitiesComponent,
+    AddImageComponent,
+    MyIndexComponent,
   ],
   imports: [
     CommonModule,

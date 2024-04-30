@@ -4,6 +4,11 @@ import { IndexComponent } from './pages/index/index.component';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateComponent } from './users/create/create.component';
 import { ListMineComponent } from './users/list-mine/list-mine.component';
+import { ListActivitiesComponent } from './pages/list-activities/list-activities.component';
+import { EditComponent } from './users/edit/edit.component';
+import { AddImageComponent } from './users/add-image/add-image.component';
+import { MyIndexComponent } from './users/my-index/my-index.component';
+import { ListComponent } from './users/list/list.component';
 
 
 const routes: Routes = [
@@ -12,25 +17,55 @@ const routes: Routes = [
     component: IndexComponent,
     children:[
       {
-        path:'create',
-        component : CreateComponent,
-        canActivate: [ AuthGuard ],
-        canMatch: [ AuthGuard ],
+        path:'user',
+        component : MyIndexComponent,
+        // canActivate: [ AuthGuard ],
+        // canMatch: [ AuthGuard ],
+        children :[
+          {
+            path:'create',
+            component : CreateComponent,
+          },
+
+          {
+            path:'mine',
+            component : ListMineComponent,
+          },
+
+          {
+            path:'edit/:{id}',
+            component : EditComponent,
+          },
+
+          {
+            path:'addImage/:{id}',
+            component : AddImageComponent,
+          },
+
+          {
+            path:'',
+            component : ListComponent,
+          },
+
+          {
+            path:'**',
+            redirectTo:'user',
+            pathMatch : 'full',
+          },
+        ]
       },
 
       {
-        path:'mine',
-        component : ListMineComponent,
-        canActivate: [ AuthGuard ],
-        canMatch: [ AuthGuard ],
+        path:'',
+        component : ListActivitiesComponent,
       },
 
       {
-        path:'edit/:{id}',
-        component : CreateComponent,
-        canActivate: [ AuthGuard ],
-        canMatch: [ AuthGuard ],
+        path:'**',
+        redirectTo:'',
+        pathMatch : 'full',
       },
+
       // { path:'new-hero', component:NewPageComponent,},
       // {
       //   path:'search',
@@ -52,7 +87,7 @@ const routes: Routes = [
       //   path:'**',
       //   redirectTo:'list',
       // },
-    ]
+    ],
   },
 ];
 
