@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IndexComponent } from './pages/index/index.component';
-import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateComponent } from './users/create/create.component';
 import { ListMineComponent } from './users/list-mine/list-mine.component';
 import { ListActivitiesComponent } from './pages/list-activities/list-activities.component';
@@ -9,6 +8,7 @@ import { EditComponent } from './users/edit/edit.component';
 import { AddImageComponent } from './users/add-image/add-image.component';
 import { MyIndexComponent } from './users/my-index/my-index.component';
 import { ListComponent } from './users/list/list.component';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 
 const routes: Routes = [
@@ -19,8 +19,8 @@ const routes: Routes = [
       {
         path:'user',
         component : MyIndexComponent,
-        // canActivate: [ AuthGuard ],
-        // canMatch: [ AuthGuard ],
+        canActivate: [ AuthGuard ],
+        canMatch: [ AuthGuard ],
         children :[
           {
             path:'create',

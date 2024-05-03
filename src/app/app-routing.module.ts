@@ -13,10 +13,20 @@ const routes: Routes = [
   },
 
   {
+    path:'user',
+    loadChildren : ()=>import('./users/users.module').then(m=> m.UsersModule),
+    // canActivate: [ PublicGuard ],
+    // canMatch: [ PublicGuard ],
+
+    canActivate: [ AuthGuard ],
+    canMatch: [ AuthGuard ],
+  },
+
+  {
     path:'activities',
     loadChildren : ()=>import('./activities/activities.module').then(m => m.ActivitiesModule),
-    // canActivate: [ AuthGuard ],
-    // canMatch: [ AuthGuard ],
+    // canActivate: [ PublicGuard ],
+    // canMatch: [ PublicGuard ],
   },
 
   {

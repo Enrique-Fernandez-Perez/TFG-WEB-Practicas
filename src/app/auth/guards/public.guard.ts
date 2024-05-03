@@ -11,12 +11,18 @@ export class PublicGuard implements CanMatch, CanActivate {
   constructor(private authService : AuthService,
     private router : Router,){}
 
-  private checkAuthStatus() : Observable<boolean> {
-    return this.authService.checkAuthentication()
-    .pipe(
-      tap(isAuthenticated => {
+    private checkAuthStatus() : Observable<boolean> {
+      return this.authService.checkAuthentication()
+      .pipe(
+        tap(isAuthenticated => {
+        /** TODO comprobar rol de usuario*/
         if(isAuthenticated){
-          this.router.navigate(['./']);
+          if(this.authService.currentUser?.id == 0){
+            this.router.navigate(['']);
+          }
+          else{
+            this.router.navigate(['./user']);
+          }
         }
       }),
       map(isAuthenticated => !isAuthenticated)
