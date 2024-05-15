@@ -19,40 +19,38 @@ const routes: Routes = [
       {
         path:'user',
         component : MyIndexComponent,
-        canActivate: [ AuthGuard ],
-        canMatch: [ AuthGuard ],
-        children :[
-          {
-            path:'create',
-            component : CreateComponent,
-          },
+        // children :[
+        //   {
+        //     path:'create',
+        //     component : CreateComponent,
+        //   },
 
-          {
-            path:'mine',
-            component : ListMineComponent,
-          },
+        //   {
+        //     path:'mine',
+        //     component : ListMineComponent,
+        //   },
 
-          {
-            path:'edit/:{id}',
-            component : EditComponent,
-          },
+        //   {
+        //     path:'edit/:{id}',
+        //     component : EditComponent,
+        //   },
 
-          {
-            path:'addImage/:{id}',
-            component : AddImageComponent,
-          },
+        //   {
+        //     path:'addImage/:{id}',
+        //     component : AddImageComponent,
+        //   },
 
-          {
-            path:'',
-            component : ListComponent,
-          },
+        //   {
+        //     path:'',
+        //     component : ListComponent,
+        //   },
 
-          {
-            path:'**',
-            redirectTo:'user',
-            pathMatch : 'full',
-          },
-        ]
+        //   {
+        //     path:'**',
+        //     redirectTo:'user',
+        //     pathMatch : 'full',
+        //   },
+        // ]
       },
 
       {

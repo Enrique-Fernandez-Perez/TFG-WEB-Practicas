@@ -8,10 +8,12 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
+import { SidebarDropComponent } from './components/sidebar-drop/sidebar-drop.component';
+// import { SiddebarComponent } from './components/siddebar/siddebar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
 
     SharedModule,
   ],
+  // exports : [SiddebarComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

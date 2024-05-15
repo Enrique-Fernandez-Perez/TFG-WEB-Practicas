@@ -13,13 +13,33 @@
 
 <div class="row modal-fullscreen modal-center">
   <div class="col-10 bg-white">
-    <router-outlet />
+
+    <div class="row modal-fullscreen modal-center">
+      <div class="col-2 bg-dark text-white">
+        <div class="fw-bold fs-3 text-center"  style="margin-top: 15rem !important; margin-bottom: 15rem !important;">
+          <!-- <p >my-index works!</p> -->
+
+          <div class="fw-bold fs-3" style="margin-top: 15rem !important;">
+            <!-- navbar actuando como sidebar  -->
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+              <div class="container-fluid">
+                <app-siddebar [menuOption]="menuOption"></app-siddebar>
+              </div>
+
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-10">
+        <router-outlet />
+      </div>
+    </div>
   </div>
 
   <div class="col-2 text-white text-center bg-dark">
     <div class="fw-bold fs-1"  style="margin-top: 15rem !important; margin-bottom: 15rem !important;">
-      <!-- <app-siddebar [menuOption]="menuOption"></app-siddebar> -->
-      <app-sidebar-drop [menuOption]="menuOption" title="Actividades"></app-sidebar-drop>
+      <app-sidebar-drop [menuOption]="mesOptions" title="Actividades"></app-sidebar-drop>
     </div>
   </div>
 </div>

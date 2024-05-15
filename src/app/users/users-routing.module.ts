@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { IndexComponent } from './pages/index/index.component';
 import { MyIndexComponent } from './pages/my-index/my-index.component';
-import { AdminIndexComponent } from './admin/pages/index/index.component';
-import { AdminMyIndexComponent } from './admin/pages/my-index/my-index.component';
+import { CreateComponent } from './pages/create/create.component';
+import { ListMineComponent } from './pages/list-mine/list-mine.component';
+import { EditComponent } from './pages/edit/edit.component';
+import { AddImageComponent } from './pages/add-image/add-image.component';
+import { AdminGuard } from '../auth/guards/admin.guard';
+import { PublicGuard } from '../auth/guards/public.guard';
 
 const routes: Routes = [
 
-  //LLeva a la vista del administrador, mediante la gestion de rutas del modulo
+  /* //LLeva a la vista del administrador, mediante la gestion de rutas del modulo
   {
     path:'admin',
     component : AdminIndexComponent,
@@ -24,7 +29,7 @@ const routes: Routes = [
         pathMatch : 'full',
       },
     ],
-  },
+  }, */
 
   //Gestionn del resto de rutas de usuarios
   {
@@ -34,14 +39,42 @@ const routes: Routes = [
       {
         path:'activities',
         component : MyIndexComponent,
-      },
-
-      {
-        path:'**',
-        redirectTo:'activities',
-        pathMatch : 'full',
+        canActivate : [PublicGuard],
       },
     ],
+  },
+
+  {
+    path:'activitie',
+    component: IndexComponent,
+    children:[
+      {
+        path:'create',
+        component : CreateComponent,
+        },
+
+        {
+          path:'mine',
+          component : ListMineComponent,
+        },
+
+        {
+          path:'edit/:{id}',
+          component : EditComponent,
+        },
+
+        {
+          path:'addImage/:{id}',
+          component : AddImageComponent,
+        },
+
+        {
+          path:'**',
+          redirectTo:'activitie/create',
+          pathMatch : 'full',
+        },
+
+      ],
   },
 
 

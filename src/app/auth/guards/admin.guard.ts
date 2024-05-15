@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class PublicGuard implements CanMatch, CanActivate {
+export class AdminGuard implements CanMatch, CanActivate {
 
   constructor(private authService : AuthService,
     private router : Router,){}
@@ -16,25 +16,10 @@ export class PublicGuard implements CanMatch, CanActivate {
       .pipe(
         tap(isAuthenticated => {
         /** TODO comprobar rol de usuario*/
-        // if(!isAuthenticated){
-        //   this.router.navigate(['']);
-        // }
         if(isAuthenticated){
-          if(this.authService.currentUser?.role_id == 0){
+          if(this.authService.currentUser?.role_id != 3){
             //** TODO cerrar sesion */
-            this.router.navigate(['']);
-          }
-          else if(this.authService.currentUser?.role_id == 1){
             this.router.navigate(['user']);
-          }
-          else if(this.authService.currentUser?.role_id == 2){
-            this.router.navigate(['user']);
-          }
-          else if(this.authService.currentUser?.role_id== 3){
-            this.router.navigate(['admin']);
-          }
-          else{
-            this.router.navigate(['']);
           }
         }
       }),

@@ -18,8 +18,18 @@ const routes: Routes = [
     // canActivate: [ PublicGuard ],
     // canMatch: [ PublicGuard ],
 
-    canActivate: [ AuthGuard ],
-    canMatch: [ AuthGuard ],
+    // canActivate: [ AuthGuard ],
+    // canMatch: [ AuthGuard ],
+  },
+
+  {
+    path:'admin',
+    loadChildren : ()=>import('./users/admin/admin.module').then(m=> m.AdminModule),
+    // canActivate: [ PublicGuard ],
+    // canMatch: [ PublicGuard ],
+
+    // canActivate: [ AuthGuard ],
+    // canMatch: [ AuthGuard ],
   },
 
   {

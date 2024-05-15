@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid text-center">
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <div class="row">
+        <a class="col-sm-12 fs-3 fw-bold navbar-brand" href="#">Menu</a>
+        <div class="col-sm-12 fs-3 fw-bold mt-5" *ngFor="let item of menuOption">
+          <a [routerLink]="item.path" class="text-white"> {{ item.name }} </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</nav>

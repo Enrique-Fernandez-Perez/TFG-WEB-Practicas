@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DropOptionMenu, MenuItems } from '../../../interfaces/menu-item';
 
 @Component({
   selector: 'app-index',
@@ -8,4 +9,29 @@ import { Component } from '@angular/core';
 })
 export class IndexComponent {
 
+  menuOption : DropOptionMenu[] = [
+    {
+      year : '2024',
+      actividades : [
+        {
+          name : 'Futbol San Ignacio',
+          path : 'ignacio'
+        }
+      ]
+    },
+    {
+      year : '2025',
+      actividades : [
+        {
+          name : 'Futbol',
+          path : 'ignacio'
+        },
+
+        {
+          name : 'Baloncesto 25',
+          path : '../user'
+        },
+      ]
+    }
+  ];
 }

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { enviroments } from 'src/environments/enviroments';
 import { User } from '../interfacess/user';
 import { Observable, catchError, map, of, take, tap } from 'rxjs';
@@ -9,9 +9,10 @@ import { Observable, catchError, map, of, take, tap } from 'rxjs';
 })
 export class AuthService {
 
+  private http = inject(HttpClient);
+
   private baseUrl : string = enviroments.baseUrl;
   private user ?: User;
-
 
   get currentUser() : User| undefined{
     if(!this.user){
@@ -28,7 +29,7 @@ export class AuthService {
       );
   }
 
-  constructor(private http : HttpClient) { }
+  constructor() { }
 
   checkAuthentication() : Observable<boolean>{
     if(!localStorage.getItem('token')){

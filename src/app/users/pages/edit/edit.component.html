@@ -1,0 +1,49 @@
+<div class="container-fluid ">
+  <div class="row">
+      <div class="col">
+          <h1>Editar Actividad : {{ activity }}</h1>
+
+          <!-- <form [formGroup]="form" method="post" action="route('admin.peticiones.store')" enctype="multipart/form-data" class="row g-3"> -->
+          <form [formGroup]="editForm" method="post" (ngSubmit)="submit(editForm)" enctype="multipart/form-data" class="row g-3">
+              <div class="col-md-8 mt-3">
+                  <div class="col-md-8 mt-3">
+                      <label for="validationServer01" class="form-label">Titulo</label>
+                      <input type="text" formControlName="titulo" name="titulo" class="form-control  @error('titulo') is-invalid @enderror" id="validationServer01" >
+                  </div>
+                  <div class="col-md-8 mt-3">
+                      <label for="validationServer01" class="form-label">Descripción</label>
+                      <textarea  formControlName="descripcion" name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" id="validationServer01" > </textarea>
+                  </div>
+
+                  <div class="col-md-8 mt-3">
+                    <label for="validationServer01" class="form-label">Usuario Organizador:</label>
+                    <select formControlName="organizador" name="organizador" class="form-control @error('organizador') is-invalid enderror" id="validationServer01" required>
+                      <option value="">-- Seleccione un Usuario --</option>
+                      <option *ngFor="let user of users" [value]="user.id">{{ user.email }}</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-8 mt-3">
+                      <label for="validationServer01" class="form-label">Fecha</label>
+                      <input type="date" placeholder="fecha" formControlName="fecha" name="fecha" id="fecha">
+                  </div>
+
+                  <div class="form-group mt-3">
+                      <label for="file">File:</label>
+                      <input type="file"
+                      id="file"
+                      class="form-control"
+                      formControlName="file"
+                      (change)="onSelectFile($event)"
+                      >
+                  </div>
+
+                  <div class="col-12 mt-3">
+                      <input [disabled]="!editForm.valid" value="Enviar petición nueva" type="submit"
+                        class="btn btn-primary">
+                  </div>
+              </div>
+          </form>
+
+
+      </div>  </div>  </div>

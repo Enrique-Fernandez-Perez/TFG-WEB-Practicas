@@ -12,6 +12,13 @@ import { ListMineComponent } from './users/list-mine/list-mine.component';
 import { ListActivitiesComponent } from './pages/list-activities/list-activities.component';
 import { AddImageComponent } from './users/add-image/add-image.component';
 import { MyIndexComponent } from './users/my-index/my-index.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ActividadesService } from './services/actividades.service';
+
+import { CarrouselComponent } from '../components/carrousel/carrousel.component';
+import { RouterModule } from '@angular/router';
+import { SidebarDropComponent } from '../components/sidebar-drop/sidebar-drop.component';
+import { SiddebarComponent } from '../components/sidebar/siddebar.component';
 
 
 @NgModule({
@@ -26,10 +33,20 @@ import { MyIndexComponent } from './users/my-index/my-index.component';
     ListActivitiesComponent,
     AddImageComponent,
     MyIndexComponent,
+    CarrouselComponent,
   ],
   imports: [
     CommonModule,
-    ActivitiesRoutingModule
+    ActivitiesRoutingModule,
+    HttpClientModule,
+    RouterModule,
+
+    SiddebarComponent,
+    SidebarDropComponent
+  ],
+  providers : [
+    ActivitiesModule,
+    ActividadesService,
   ]
 })
 export class ActivitiesModule { }

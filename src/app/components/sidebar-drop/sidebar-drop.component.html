@@ -1,0 +1,14 @@
+<h1> {{ title }} </h1>
+<div class="btn-group dropstart col-sm-7 my-2 py-2" *ngFor="let year of menuOption">
+  <button type="button" class="btn btn-secondary fw-bold fs-2 dropdown-toggle col-12" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ year.year }}
+  </button>
+  <ul class="dropdown-menu col-12 my-2">
+    <!-- Dropdown menu links -->
+    <li class="my-1 py-2" *ngFor="let actividad of year.actividades">
+      <a class="text-dark fs-5 fw-bold" [routerLink]="actividad.path">
+        {{ actividad.name }}
+      </a>
+    </li>
+  </ul>
+</div>
