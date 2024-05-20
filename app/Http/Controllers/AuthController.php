@@ -67,11 +67,13 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
 //            'role_id'=> "REGISTRADO"
         ]);
-//        $token = Auth::login($user);
+        $token = Auth::login($user);
         return response()->json([
             'message' => "User successfully registered",
+//            "token" => $token,
             'user' => $user,
         ]);
+
     }
     /**
      * Get the authenticated User.

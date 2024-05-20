@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-//use app\Http\Models\Categoria;
 
 class Actividade extends Model
 {
     use HasFactory;
 
-    protected $fillable= ['titulo','descripcion','destinatario','firmantes','estado'];
+    protected $fillable= ['titulo','descripcion','organizador', 'fecha'];
 
 
     //ha sido creado por el usuario
@@ -23,10 +22,10 @@ class Actividade extends Model
     }
 
     public function favoritas(){
-        return $this->belongsTo('App\Models\Peticione');
+        return $this->belongsTo('App\Models\Favorita');
     }
 
     public function inscipciones(){
-        return $this->belongsTo('App\Models\Peticione');
+        return $this->belongsTo('App\Models\Inscripcione');
     }
 }

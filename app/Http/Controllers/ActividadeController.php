@@ -6,15 +6,14 @@ use App\Models\Actividade;
 use App\Models\Favorita;
 use App\Models\File;
 use App\Models\Inscripcione;
-use App\Models\Peticione;
 use App\Models\User;
 //use Dotenv\Store\File\Paths;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Categoria;
 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use function PHPUnit\Framework\isEmpty;
@@ -27,13 +26,18 @@ class ActividadeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['index', 'show', 'showImage']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+    }
+
+    public function categorias(Request $request){
+        return $this->index($request);
     }
 
     public function index(Request $request)
     {
         try {
-            $actividades = Actividade::all()->load(['user', 'files']);
+//            $actividades = Actividade::all()->load(['user', 'files']);
+            $actividades = Actividade::all();
             return response()->json( $actividades, 200);
         }
         catch (\Exception $exception){
@@ -51,7 +55,7 @@ class ActividadeController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $actividad = Actividade::findOrFail($id)->load(['user', 'categoria', 'files']);;
+            $actividad = Actividade::findOrFail($id)->load(['user', 'files']);;
             return response()->json( $actividad, 200);
         }
         catch (\Exception $exception){
@@ -72,7 +76,7 @@ class ActividadeController extends Controller
             }
 
             $actividad-> update($request-> all());
-            //$actividad->save();
+//            $actividad->save();
             return response()->json( $actividad, 201);
         }
         catch (\Exception $exception){
@@ -87,7 +91,7 @@ class ActividadeController extends Controller
                 [
                     'titulo' => 'required|max:255',
                     'descripcion' => 'required',
-                    'fecha' => 'required',
+//                    'fecha' => 'required',
                     //'file' => 'required',
                 ]);
             if ($validator->fails()) {
@@ -100,24 +104,37 @@ class ActividadeController extends Controller
 
             $actividad = new Actividade();
 
-
             $actividad->titulo = $request->input('titulo');
             $actividad->descripcion = $request->input('descripcion');
 //            $actividad->image = $input['file'];
 
-            $actividad-> user()-> associate($user);
+//            $actividad-> user()-> associate($user);
+            $actividad->organizador = $user->id;
+
+
+            $validator = Validator::make($input,
+                [
+                    'fecha' => 'required',
+                ]);
+            if ($validator->fails()) {
+                $actividad->fecha = Date::now();
+            }
+            else{
+                $actividad->fecha = $input['fecha'];
+            }
+
             $actividad-> save();
 
 
-            $file = $request->file('file');
-            $pid = $actividad->id;
-            $fileModel = new File;
-            $fileModel->peticione_id = $pid;
-            $filename = $pid . '_' . $file->getClientOriginalName();
-            $file->move('storage/files', $filename);
-            $fileModel->name = $filename;
-            $fileModel->file_path = "storage/files" . $filename;
-            $fileModel->save();
+//            $file = $request->file('file');
+//            $pid = $actividad->id;
+//            $fileModel = new File;
+//            $fileModel->peticione_id = $pid;
+//            $filename = $pid . '_' . $file->getClientOriginalName();
+//            $file->move('storage/files', $filename);
+//            $fileModel->name = $filename;
+//            $fileModel->file_path = "storage/files" . $filename;
+//            $fileModel->save();
 
             return response()->json($actividad,201);
         }
@@ -171,6 +188,7 @@ class ActividadeController extends Controller
 
     public function actividadesInscritas(Request $request)
     {
+//        return response()->json( ['msg'=>'lol'],200);
         try {
             $id = Auth::id();
             $ins = Inscripcione::all()-> where('user_id', $id);

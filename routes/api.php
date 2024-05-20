@@ -18,14 +18,15 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
+
+Route::get('actividades/mine', response()->json('lol',408));
+
 Route::controller(\App\Http\Controllers\ActividadeController::class)->group(function () {
     Route::get('actividades', 'index');
-    Route::get('actividades', 'listmine');
-    Route::get('actividades/{id}', 'show');
+//    Route::get('actividades/mine', response()->json('lol',408));
     Route::get('actividades/{id}', 'show');
     Route::delete('actividades/{id}', 'delete');
     Route::put('actividades/{id}', 'update');
-    Route::put('actividades/estado/{id}', 'cambiarEstado');
     Route::post('actividades', 'store');
     Route::get('actividades/inscrito', 'actividadesInscritas');
 });
