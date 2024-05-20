@@ -43,7 +43,8 @@ class PeticioneController extends Controller
     {
         $user = Auth::user();
 //        $peticiones = Peticione::all()->where('user_id', $user->id)->paginate(3)->load(['user', 'categoria', 'files']);
-        $peticiones = Peticione::all()->where('user_id', $user->id)->load(['user', 'categoria', 'files']);
+//        $peticiones = Peticione::all()->where('user_id', $user->id)->load(['user', 'categoria', 'files']);
+        $peticiones = Peticione::all()->where('user_id', $user->id);
         return response()->json( $peticiones, 200);
     }
 
