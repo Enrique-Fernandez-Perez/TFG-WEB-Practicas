@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 //use app\Http\Models\Categoria;
 
-class Peticione extends Model
+class Actividade extends Model
 {
     use HasFactory;
 

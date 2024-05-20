@@ -18,19 +18,17 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::controller(\App\Http\Controllers\PeticioneController::class)->group(function () {
-    Route::get('peticiones', 'index');
-    Route::get('mispeticiones', 'listmine');
-    Route::get('peticiones/firmadas', 'peticionesFirmadas');
-    Route::get('peticiones/{id}', 'show');
-    Route::get('categorias', 'categorias');
-    Route::delete('peticiones/{id}', 'delete');
-    Route::put('peticiones/firmar/{id}', 'firmar');
-    Route::put('peticiones/{id}', 'update');
-    Route::put('peticiones/estado/{id}', 'cambiarEstado');
-    Route::post('peticiones', 'store');
-
-    Route::get('imagen/{id}', 'showImage');
+Route::controller(\App\Http\Controllers\ActividadeController::class)->group(function () {
+    Route::get('actividades', 'index');
+    Route::get('actividades', 'listmine');
+    Route::get('actividades/firmadas', 'peticionesFirmadas');
+    Route::get('actividades/{id}', 'show');
+    Route::get('actividades', 'categorias');
+    Route::delete('actividades/{id}', 'delete');
+    Route::put('actividades/firmar/{id}', 'firmar');
+    Route::put('actividades/{id}', 'update');
+    Route::put('actividades/estado/{id}', 'cambiarEstado');
+    Route::post('actividades', 'store');
 });
 
 Route::controller(\App\Http\Controllers\AuthController::class)->group(function () {

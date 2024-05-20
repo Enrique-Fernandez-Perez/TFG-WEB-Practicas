@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actividade;
 use App\Models\File;
 use App\Models\Peticione;
 use App\Models\User;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Validator;
 // use Illuminate\Pagination\LengthAwarePaginator;
 
 
-class PeticioneController extends Controller
+class ActividadeController extends Controller
 {
     public function __construct()
     {
@@ -41,14 +42,14 @@ class PeticioneController extends Controller
     public function listMine(Request $request)
     {
         $user = Auth::user();
-        $peticiones = Peticione::all()-> where('user_id', $user->id)->load(['user', 'categoria', 'files']);
+        $peticiones = Actividade::all()-> where('user_id', $user->id)->load(['user', 'categoria', 'files']);
         return response()->json( $peticiones, 200);
     }
 
     public function show(Request $request, $id)
     {
         try {
-            $peticion = Peticione::findOrFail($id)->load(['user', 'categoria', 'files']);;
+            $peticion = Actividade::findOrFail($id)->load(['user', 'categoria', 'files']);;
             return response()->json( $peticion, 200);
         }
         catch (\Exception $exception){
@@ -59,7 +60,7 @@ class PeticioneController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $peticion = Peticione::findOrFail($id);
+            $peticion = Actividade::findOrFail($id);
 
             $user = Auth::user();
             $rol = $user->role_id;

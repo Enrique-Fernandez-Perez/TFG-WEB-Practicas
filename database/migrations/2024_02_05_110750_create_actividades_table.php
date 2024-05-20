@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('titulo', 255);
             $table->text('descripcion');
             $table->text('organizador');
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
-            $table->foreignId('user_id')->onDelete('cascade');;
+            $table->date('fecha');
+            $table->foreign('organizador')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             // $table->string('image', 255, ); No se necesita
             $table->timestamps();
         });

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('actividade_user', function (Blueprint $table) {
+        Schema::create('actividade_user1', function (Blueprint $table) {
             $table->primary(['user_id','actividade_id']);
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('actividade_id')->unsigned();
