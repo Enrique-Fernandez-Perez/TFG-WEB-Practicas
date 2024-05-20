@@ -21,14 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::controller(\App\Http\Controllers\ActividadeController::class)->group(function () {
     Route::get('actividades', 'index');
     Route::get('actividades', 'listmine');
-    Route::get('actividades/firmadas', 'peticionesFirmadas');
     Route::get('actividades/{id}', 'show');
-    Route::get('actividades', 'categorias');
+    Route::get('actividades/{id}', 'show');
     Route::delete('actividades/{id}', 'delete');
-    Route::put('actividades/firmar/{id}', 'firmar');
     Route::put('actividades/{id}', 'update');
     Route::put('actividades/estado/{id}', 'cambiarEstado');
     Route::post('actividades', 'store');
+    Route::get('actividades/inscrito', 'actividadesInscritas');
 });
 
 Route::controller(\App\Http\Controllers\AuthController::class)->group(function () {

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titulo', 255);
             $table->text('descripcion');
-            $table->text('organizador');
+            $table->bigInteger('organizador')->unsigned();
             $table->date('fecha');
             $table->foreign('organizador')
                 ->references('id')

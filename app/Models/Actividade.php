@@ -12,16 +12,6 @@ class Actividade extends Model
 
     protected $fillable= ['titulo','descripcion','destinatario','firmantes','estado'];
 
-    //pertenece a la categoria
-    public function categoria(){
-        return $this->belongsTo('App\Models\Categoria');
-    }
-
-    //ha sido firmada por
-    public function firmas(){
-        return $this->belongsToMany(User::class,'peticione_user');
-//        return $this->belongsToMany("App\Models\User",'peticione_user');
-    }
 
     //ha sido creado por el usuario
     public function user(){
@@ -30,5 +20,13 @@ class Actividade extends Model
 
     public function files(){
         return $this->hasMany("App\Models\File");
+    }
+
+    public function favoritas(){
+        return $this->belongsTo('App\Models\Peticione');
+    }
+
+    public function inscipciones(){
+        return $this->belongsTo('App\Models\Peticione');
     }
 }

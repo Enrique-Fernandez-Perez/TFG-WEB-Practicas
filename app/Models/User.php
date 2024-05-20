@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,7 +22,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password'
     ];
 
     /**
@@ -46,15 +45,9 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
     ];
 
-    public function peticiones(){
+    public function actividades(){
         //puede craer muchas peticiones
-        return $this->hasMany("App\Models\Peticione");
-    }
-
-    //Puede firmar
-    public function firmas(){
-        return $this->belongsToMany(Peticione::class, "peticione_user");
-//        return $this->belongsToMany("App\Models\Peticione", "peticione_user");
+        return $this->hasMany("App\Models\Actividade");
     }
 
     /**
@@ -74,5 +67,13 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function favoritas(){
+        return $this->belongsTo('App\Models\Favorita');
+    }
+
+    public function inscipciones(){
+        return $this->belongsTo('App\Models\Inscripcione');
     }
 }

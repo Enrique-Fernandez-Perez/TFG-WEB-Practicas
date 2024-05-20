@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('actividade_user1', function (Blueprint $table) {
+        Schema::create('favoritas', function (Blueprint $table) {
             $table->primary(['user_id','actividade_id']);
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('actividade_id')->unsigned();
             $table->timestamps();
-            $table->foreign('user_i')
+            $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');

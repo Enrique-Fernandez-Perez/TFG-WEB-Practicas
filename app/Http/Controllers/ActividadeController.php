@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Actividade;
+use App\Models\Favorita;
 use App\Models\File;
+use App\Models\Inscripcione;
 use App\Models\Peticione;
 use App\Models\User;
 //use Dotenv\Store\File\Paths;
@@ -31,8 +33,8 @@ class ActividadeController extends Controller
     public function index(Request $request)
     {
         try {
-            $peticiones = Peticione::all()->load(['user', 'categoria', 'files']);
-            return response()->json( $peticiones, 200);
+            $actividades = Actividade::all()->load(['user', 'files']);
+            return response()->json( $actividades, 200);
         }
         catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
@@ -42,15 +44,15 @@ class ActividadeController extends Controller
     public function listMine(Request $request)
     {
         $user = Auth::user();
-        $peticiones = Actividade::all()-> where('user_id', $user->id)->load(['user', 'categoria', 'files']);
-        return response()->json( $peticiones, 200);
+        $actividades = Actividade::all()-> where('organizador', $user->id)->load(['user', 'files']);
+        return response()->json( $actividades, 200);
     }
 
     public function show(Request $request, $id)
     {
         try {
-            $peticion = Actividade::findOrFail($id)->load(['user', 'categoria', 'files']);;
-            return response()->json( $peticion, 200);
+            $actividad = Actividade::findOrFail($id)->load(['user', 'categoria', 'files']);;
+            return response()->json( $actividad, 200);
         }
         catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
@@ -60,18 +62,18 @@ class ActividadeController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $peticion = Actividade::findOrFail($id);
+            $actividad = Actividade::findOrFail($id);
 
             $user = Auth::user();
             $rol = $user->role_id;
 
-            if($rol == 1 && $peticion->user_id != $user->id){
+            if($rol == 1 && $actividad->user_id != $user->id){
                 return response()->json( ["Error" => "Este usuario no tiene permisos para modificar"], 201);
             }
 
-            $peticion-> update($request-> all());
-            //$peticion->save();
-            return response()->json( $peticion, 201);
+            $actividad-> update($request-> all());
+            //$actividad->save();
+            return response()->json( $actividad, 201);
         }
         catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
@@ -85,129 +87,43 @@ class ActividadeController extends Controller
                 [
                     'titulo' => 'required|max:255',
                     'descripcion' => 'required',
-                    'destinatario' => 'required',
-                    'categoria_id' => 'required',
+                    'fecha' => 'required',
                     //'file' => 'required',
                 ]);
             if ($validator->fails()) {
                 return response()->json(['error' => $validator->errors()], 401);
             }
-            $validator = Validator::make($request->all(),
-                [
-                    'file' => 'required',
-                ]);
-            if ($validator->fails()) {
-                return response()->json(['error' => $validator->errors()], 401);
-            }
-//            return response()->json('$peticion',201);
+
             $input = $request-> all();
 
-//            if($file = $request->file('file')){
-//                $name = $file->getClientOriginalName();
-//                Storage::put($name, file_get_contents($request->file('file')->getRealPath()));
-//                $file->move('storage/'. $file);
-//                return response()->json('$peticion',201);
-//                $input['file'] = $name;
-//            }
-
-            $category = Categoria::findOrFail($request-> input('categoria_id'));
             $user = Auth::user();
 
-            $peticion = new Peticione();
+            $actividad = new Actividade();
 
 
-            $peticion->titulo = $request->input('titulo');
-            $peticion->descripcion = $request->input('descripcion');
-            $peticion->destinatario = $request->input('destinatario');
-//            $peticion->image = $input['file'];
+            $actividad->titulo = $request->input('titulo');
+            $actividad->descripcion = $request->input('descripcion');
+//            $actividad->image = $input['file'];
 
-            $peticion-> user()-> associate($user);
-            $peticion-> categoria()-> associate($category);
-            $peticion-> firmantes = 0;
-            $peticion-> estado = 'pendiente';
-            $peticion-> save();
+            $actividad-> user()-> associate($user);
+            $actividad-> save();
 
 
             $file = $request->file('file');
-            $pid = $peticion->id;
+            $pid = $actividad->id;
             $fileModel = new File;
             $fileModel->peticione_id = $pid;
             $filename = $pid . '_' . $file->getClientOriginalName();
-            $file->move('storage', $filename);
+            $file->move('storage/files', $filename);
             $fileModel->name = $filename;
-            $fileModel->file_path = "storage/" . $filename;
+            $fileModel->file_path = "storage/files" . $filename;
             $fileModel->save();
 
-//            $imgdb= new File();
-//            $imgdb->name = $input['file'];
-//            $imgdb->file_path = 'storage/' . $input['file'];
-//            $imgdb->peticione_id = $peticion->id;
-//            $imgdb->save();
-
-            return response()->json($peticion,201);
-//            return response()->json( $peticion, 201);
+            return response()->json($actividad,201);
         }
         catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
         }
-    }
-
-
-    public function categorias(Request $request){
-        try {
-            $categorias = Categoria::all()->load(['id', 'nombre']);
-            return response()->json( $categorias, 200);
-        }
-        catch (\Exception $exception){
-            return response()->json( ['error'=>$exception->getMessage()], 500);
-        }
-    }
-
-    public function firmar(Request $request, $id)
-    {
-        try {
-            $peticion = Peticione::findOrFail($id);
-            $user = Auth::user();
-
-            $firmas = $peticion->firmas;
-            foreach ($firmas as $firma) {
-                if ($firma->id == $user->id) {
-                    return response()->json(['message' => 'Ya has firmado esta petición'], 403);
-                }
-            }
-//            if(!empty($peticion->firmas->where('id', $user->id)[0])){
-////                return response()->json( 'El usuario ya ha firmado la peticion',403);
-//                return response()->json(['message' => 'Ya has firmado esta petición'], 403);
-//            }
-            $peticion-> firmas()-> attach($user->id);
-            $peticion-> firmantes = $peticion-> firmantes + 1;
-            $peticion-> save();
-            return response()->json($peticion, 201);
-        }
-        catch (\Exception $exception){
-            return response()->json( ['error'=>$exception->getMessage()], 500);
-        }
-
-    }
-
-    public function cambiarEstado(Request $request, $id)
-    {
-        if(Auth::user()->role_id == 0){
-            return response()->json( ["Error" => "Este usuario no tiene permisos para cambiar el estado"], 201);
-        }
-        $peticion = Peticione::findOrFail($id);
-        if(Auth::user()->id != $peticion->user()->id){
-            return response()->json([''=>''],403);
-        }
-//        if($request->user()->cannot('cambiarEstado'), $peticion){
-//            return response()->json([''=>''],403);
-//        }
-        $peticion-> estado = 'aceptada';
-        $resp = $peticion-> save();
-        if($resp){
-            return response()->json([''=>''],403);
-        }
-        return $peticion;
     }
 
     public function delete(Request $request, $id)
@@ -216,50 +132,50 @@ class ActividadeController extends Controller
             $user = Auth::user();
             $rol = $user->role_id;
 
-            $peticion = Peticione::findOrFail($id);
+            $actividad = Actividade::findOrFail($id);
 
 
-            if($rol === 0 && $peticion->user_id != $user->id){
-                return response()->json( ["Error" => "Este usuario no tiene permisos para eleminar"], 201);
-            }
+//            if($rol === 0 && $actividad->user_id != $user->id){
+//                return response()->json( ["Error" => "Este usuario no tiene permisos para eleminar"], 201);
+//            }
 
             $this->fileDelete($request,$id);
 
-            $peticion-> delete();
-//            $peticion-> destroy();
-            return response()->json( $peticion, 201);
+            $actividad-> delete();
+            return response()->json( $actividad, 201);
         }
         catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
 
-    public function showImage(Request $req, $id){
-        try{
-            $peticion = Peticione::findOrFail($id);
-            $image = $peticion->files[0];//File::findOrFail($id);
-            return  response()->file($image->file_path);
-        }
-        catch (\Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()], 500);
-        }
-    }
-
-    public function fileDelete(Request $req, $peticione_id = null)
+    public function fileDelete(Request $req, $actividade_id = null)
     {
-        $pet = Peticione::findOrFail($peticione_id);
+        $pet = Actividade::findOrFail($actividade_id);
         $path = $pet->files()->first()->file_path;
         $file = unlink($path);
         return $file;
     }
 
-    public function peticionesFirmadas(Request $request)
+    public function actividadesFavoritas(Request $request)
     {
         try {
             $id = Auth::id();
-            $usuario = User::findOrFail($id);
-            $peticiones = $usuario->firmas;
-            return response()->json( $peticiones, 200);
+            $fav = Favorita::all()-> where('user_id', $id);
+            $actividades = $fav->actividades;
+            return response()->json( $actividades, 200);
+        }catch (\Exception $exception){
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+    }
+
+    public function actividadesInscritas(Request $request)
+    {
+        try {
+            $id = Auth::id();
+            $ins = Inscripcione::all()-> where('user_id', $id);
+            $actividades = $ins->actividades;
+            return response()->json( $actividades, 200);
         }catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
         }

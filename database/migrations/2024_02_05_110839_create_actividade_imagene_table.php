@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('actividade_imagene', function (Blueprint $table) {
-            $table->primary(['imagene_id','actividade_id']);
-            $table->bigInteger('user_id')->unsigned();
+            $table->primary(['actividade_id','imagene_id']);
+            $table->bigInteger('imagene_id')->unsigned();
             $table->bigInteger('actividade_id')->unsigned();
             $table->timestamps();
             $table->foreign('imagene_id')
