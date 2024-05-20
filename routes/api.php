@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+
+Route::controller(\App\Http\Controllers\ActividadeController::class)->group(function () {
+    Route::get('actividades', 'index');
+    Route::get('actividades/mine', 'listMine');
+    Route::get('actividades/{id}', 'show');
+    Route::delete('actividades/{id}', 'delete');
+    Route::put('actividades/{id}', 'update');
+    Route::post('actividades', 'store');
+    Route::get('actividades/inscrito', 'actividadesInscritas');
+});
+
+Route::controller(\App\Http\Controllers\AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
+    Route::get('me', 'me');
 });
