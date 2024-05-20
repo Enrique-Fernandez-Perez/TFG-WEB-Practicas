@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   ]
 })
 export class LoginPageComponent {
-  
+
   constructor(private authService : AuthService,
       private router : Router){}
 
@@ -19,6 +19,12 @@ export class LoginPageComponent {
       .subscribe(user => {
         this.router.navigate(['/']);
       });
+
+      /* imagenes/users/registroactividad/favactividad Model backend ?? = imagenes/users*/
+    // public function ??(){
+    //     return $this->belongsToMany('App\Models\User')->withTimestamps();
+    // }
+    // https://railway.app/
 
   }
 }
