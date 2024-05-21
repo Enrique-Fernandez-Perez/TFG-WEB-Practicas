@@ -15,7 +15,7 @@ class Imagene extends Model
         'file_path',
     ];
 
-//    public function peticione(){
-//        return$this->belongsTo(Peticione::class);
-//    }
+    public function activiades(){
+        return$this->belongsToMany(Actividade::class);
+    }
 }

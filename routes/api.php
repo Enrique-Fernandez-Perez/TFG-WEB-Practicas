@@ -19,16 +19,23 @@ use Illuminate\Support\Facades\Route;
 //});
 
 
-Route::get('actividades/mine', response()->json('lol',408));
+Route::controller(\App\Http\Controllers\UsersController::class)->group(function () {
+    Route::get('users', 'index');
+});
 
 Route::controller(\App\Http\Controllers\ActividadeController::class)->group(function () {
     Route::get('actividades', 'index');
-//    Route::get('actividades/mine', response()->json('lol',408));
+    Route::get('actividades/mine', 'listMine');
     Route::get('actividades/{id}', 'show');
     Route::delete('actividades/{id}', 'delete');
     Route::put('actividades/{id}', 'update');
     Route::post('actividades', 'store');
+    Route::post('actividades/inscribir/{id}', 'addInscription');
+    Route::post('actividades/favorita/{id}', 'addFavorite');
+    Route::post('actividad/addImage/{id}', 'addImage');
+    Route::get('actividades/search/{search}', 'search');
     Route::get('actividades/inscrito', 'actividadesInscritas');
+    Route::get('actividades/favoritas', 'actividadesFavoritas');
 });
 
 Route::controller(\App\Http\Controllers\AuthController::class)->group(function () {

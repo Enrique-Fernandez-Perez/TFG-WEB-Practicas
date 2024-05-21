@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Actividade;
 use App\Models\Favorita;
 use App\Models\File;
+use App\Models\Imagene;
 use App\Models\Inscripcione;
 use App\Models\User;
 //use Dotenv\Store\File\Paths;
@@ -52,6 +53,15 @@ class ActividadeController extends Controller
         return response()->json( $actividades, 200);
     }
 
+    public function search(Request $request, $search)
+    {
+        $user = Auth::user();
+        $actividades1 = Actividade::all()-> where('titulo', 'like', '%'+$search.'&')->load(['user', 'files']);
+        $actividades2 = Actividade::all()-> where('descripcion', 'like', '%'+$search.'&')->load(['user', 'files']);
+        $actividades = array_merge($actividades1, $actividades2);
+        return response()->json( $actividades, 200);
+    }
+
     public function show(Request $request, $id)
     {
         try {
@@ -71,7 +81,7 @@ class ActividadeController extends Controller
             $user = Auth::user();
             $rol = $user->role_id;
 
-            if($rol == 1 && $actividad->user_id != $user->id){
+            if($rol == 'administrador' && $actividad->user_id != $user->id){
                 return response()->json( ["Error" => "Este usuario no tiene permisos para modificar"], 201);
             }
 
@@ -125,20 +135,85 @@ class ActividadeController extends Controller
 
             $actividad-> save();
 
-
-//            $file = $request->file('file');
-//            $pid = $actividad->id;
-//            $fileModel = new File;
-//            $fileModel->peticione_id = $pid;
-//            $filename = $pid . '_' . $file->getClientOriginalName();
-//            $file->move('storage/files', $filename);
-//            $fileModel->name = $filename;
-//            $fileModel->file_path = "storage/files" . $filename;
-//            $fileModel->save();
+            $validator = Validator::make($request->all(),
+                [
+                    'file' => 'required',
+                ]);
+            if (!$validator->fails()) {
+                $file = $request->file('file');
+                $pid = $actividad->id;
+                $fileModel = new File;
+                $fileModel->peticione_id = $pid;
+                $filename = $pid . '_' . $file->getClientOriginalName();
+                $file->move('storage/files', $filename);
+                $fileModel->name = $filename;
+                $fileModel->file_path = "storage/files" . $filename;
+                $fileModel->save();
+            }
 
             return response()->json($actividad,201);
         }
         catch (\Exception $exception){
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+    }
+
+    public function addInscription(Request $request, $id)
+    {
+        try {
+            $user_id = Auth::id();
+            $inscripcion = new Inscripcione();
+
+            $inscripcion->user_id = $user_id;
+            $inscripcion->actividade_id = $id;
+
+            $inscripcion->save();
+            return response()->json( $inscripcion, 200);
+        }catch (\Exception $exception){
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+    }
+    public function addFavorite(Request $request, $id)
+    {
+        try {
+            $user_id = Auth::id();
+            $inscripcion = new Favorita();
+
+            $inscripcion->user_id = $user_id;
+            $inscripcion->actividade_id = $id;
+
+            $inscripcion->save();
+            return response()->json( $inscripcion, 200);
+        }catch (\Exception $exception){
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+    }
+    public function addImage(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required',
+                'descripcion' => 'required',
+                'file' => 'required',
+            ]);
+        if ($validator->fails()) {
+            $file = $request->file('file');
+//            $pid = $actividad->id;
+            $fileModel = new Imagene();
+//            $fileModel->peticione_id = $pid;
+            $fileModel->name = $request->all()['name'];
+            $fileModel->descripcion = $request->all()['descripcion'];
+            $filename = $id . '_' . $file->getClientOriginalName();
+            $file->move('storage/images', $filename);
+            $fileModel->file_path = "storage/images" . $filename;
+
+            $fileModel->activiades()->attach($id);
+
+            $fileModel->save();
+        }
+        try {
+            return response()->json( $fileModel, 200);
+        }catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
         }
     }

@@ -9,6 +9,16 @@ class Favorita extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'actividade_id'
+    ];
+
     public function users(){
         return $this->hasOne('App\Models\User');
     }

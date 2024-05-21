@@ -21,6 +21,10 @@ class Actividade extends Model
         return $this->hasMany("App\Models\File");
     }
 
+    public function imagenes(){
+        return $this->belongsToMany("App\Models\Imagene");
+    }
+
     public function favoritas(){
         return $this->belongsTo('App\Models\Favorita');
     }
