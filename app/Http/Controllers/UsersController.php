@@ -15,11 +15,41 @@ class UsersController extends BaseController
     public function index(Request $request)
     {
         try {
-            $users = User::all();
+            $users = User::all()->where('role_id', '!=', 'register');
             return response()->json( $users, 200);
         }
         catch (\Exception $exception){
             return response()->json( ['error'=>$exception->getMessage()], 500);
         }
+    }
+
+    public function usuersRegister(Request $request)
+    {
+        try {
+            $users = User::all()->where('role_id', '=', 'register');
+            return response()->json( $users, 200);
+        }
+        catch (\Exception $exception){
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->role_id = $request->all()['role_id'];
+            $user->save();
+            return response()->json( $user, 200);
+        }
+        catch (\Exception $exception){
+            return response()->json( ['error'=>$exception->getMessage()], 500);
+        }
+    }
+
+    public function findById(Request $request, $id)
+    {
+        $user = User::findOrFasil($id);
+        return response()->json( $user, 200);
     }
 }
