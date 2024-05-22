@@ -5,7 +5,7 @@ import { ActivitiesRoutingModule } from './activities-routing.module';
 import { EditComponent } from './users/edit/edit.component';
 import { CreateComponent } from './users/create/create.component';
 import { ListComponent } from './users/list/list.component';
-import { ShowComponent } from './users/show/show.component';
+// import { ShowComponent } from './users/show/show.component';
 import { IndexComponent } from './pages/index/index.component';
 import { SearchComponent } from './pages/search/search.component';
 import { ListMineComponent } from './users/list-mine/list-mine.component';
@@ -19,6 +19,7 @@ import { CarrouselComponent } from '../components/carrousel/carrousel.component'
 import { RouterModule } from '@angular/router';
 import { SidebarDropComponent } from '../components/sidebar-drop/sidebar-drop.component';
 import { SiddebarComponent } from '../components/sidebar/siddebar.component';
+import { ShowComponent } from './pages/show/show.component';
 
 
 @NgModule({
@@ -42,7 +43,7 @@ import { SiddebarComponent } from '../components/sidebar/siddebar.component';
     RouterModule,
 
     SiddebarComponent,
-    SidebarDropComponent
+    SidebarDropComponent,
   ],
   providers : [
     ActivitiesModule,

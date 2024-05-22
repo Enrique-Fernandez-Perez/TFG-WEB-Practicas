@@ -12,6 +12,7 @@ import { AddImageComponent } from '../pages/add-image/add-image.component';
 import { CreateUserComponent } from './users/create/create-user.component';
 import { ListUsersComponent } from './users/list/list-users.component';
 import { ShowUserComponent } from './users/show/show-user.component';
+import { EditUserComponent } from './users/edit/edit-user.component';
 
 
 const routes: Routes = [
@@ -72,6 +73,11 @@ const routes: Routes = [
         {
           path:'listUser',
           component : ListUsersComponent,
+        },
+        
+        {
+          path:'register',
+          component : EditUserComponent,
         },
 
         {

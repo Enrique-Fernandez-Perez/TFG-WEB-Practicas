@@ -9,6 +9,7 @@ import { AddImageComponent } from './users/add-image/add-image.component';
 import { MyIndexComponent } from './users/my-index/my-index.component';
 import { ListComponent } from './users/list/list.component';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { ShowComponent } from './pages/show/show.component';
 
 
 const routes: Routes = [
@@ -56,6 +57,11 @@ const routes: Routes = [
       {
         path:'',
         component : ListActivitiesComponent,
+      },
+      
+      {
+        path:':Id',
+        component : ShowComponent,
       },
 
       {

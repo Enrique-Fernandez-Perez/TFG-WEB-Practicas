@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { enviroments } from 'src/environments/enviroments';
 import { User } from '../interfacess/user';
 import { Observable, catchError, map, of, take, tap } from 'rxjs';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,65 @@ export class AuthService {
   private http = inject(HttpClient);
 
   private baseUrl : string = enviroments.baseUrl;
-  private user ?: User;
+
+  constructor( private tokenService: TokenService,) {}
+  // User registration
+  register(user: User): Observable<any> {
+    return this.http.post(this.baseUrl + 'api/register', user);
+  }
+  // Login
+  signin(user: User): Observable<any> {
+    return this.http.post<any>(this.baseUrl + '/api/login', user);
+  }
+  
+  // Access user profile
+  profileUser(): Observable<User> {
+    // return this.http.get(this.baseUrl + '/api/user-profile');
+    return this.http.get<User>(this.baseUrl + '/api/me');
+  }
+
+  user ?: User;
+
+  getUser(){
+    const token = this.tokenService.getToken();
+    
+    if(!token){
+      return false;
+    }
+
+    const headers = new HttpHeaders();
+    
+    headers.set(
+      'Authorization', "Bearer " + token
+    );
+
+    this.http.get<User>(this.baseUrl + '/api/me',{headers}).subscribe(data => this.user = data);
+    return this.user;
+  }
+
+  get currentUser() : User| undefined{
+    if(!this.user){
+      return undefined;
+    }
+    return structuredClone(this.user);
+  }
+
+  checkAuthentication() : Observable<boolean>{
+    if(!localStorage.getItem('token')){
+      return of(false);
+    }
+
+    const token = localStorage.getItem('token');
+
+    return this.http.get<User>(`${this.baseUrl}/users/1`)
+      .pipe(
+        tap(user=> this.user = user),
+        map(user => !!user),
+        catchError(err => of(false))
+        )
+  }
+  
+  /* private user ?: User;
 
   get currentUser() : User| undefined{
     if(!this.user){
@@ -50,5 +109,6 @@ export class AuthService {
     this.user = undefined;
     // localStorage.removeItem('token');
     localStorage.clear();
-  }
+  } */
+
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DropOptionMenu, MenuItems } from '../../../interfaces/menu-item';
 
 @Component({
@@ -34,4 +34,5 @@ export class IndexComponent {
       ]
     }
   ];
+
 }

@@ -85,8 +85,9 @@ export class ListActivitiesComponent {
 
   //  TODO usar servicio actividades para traer las actividades
   ngOnInit(){
-    // this.actividadesService.getAll().subscribe(data =>{
-      //   this.actividades = data;
-      // });
+    this.actividadesService.getAll().subscribe(data =>{
+        this.actividades = data;
+        console.log(data);
+      });
     }
   }

@@ -1,1 +1,18 @@
-<p>show works!</p>
+  <div id="vistaPeticion">
+    <div id="imagen">
+        <app-carousel [images]="imagenes"></app-carousel>
+    </div>
+    
+    <h1 >{{ actividad.titulo}}</h1>
+    
+    <br>
+
+    <h3>Descripcion: <br>{{actividad.descripcion}}</h3>
+
+    <h4>Organizador :  <br> {{organizador.name}}</h4>
+
+    <h6>
+        <a id="firmar" (click)="delete(actividad.id)" type="button" class="btn btn-danger center-block" >Eliminar actividad</a>
+    </h6>
+
+</div>

@@ -24,12 +24,12 @@ export class IndexComponent {
   menuOption : MenuItems[] = [
     {
       name : 'Usuarios registrados',
-      path : ''
+      path : '/admin/users/register'
     },
 
     {
       name : 'Usuarios',
-      path : ''
+      path : 'listUser'
     },
 
     {
