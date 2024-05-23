@@ -7,7 +7,7 @@
 
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
       <div class="row">
-        <a class="col-sm-12 fs-3 fw-bold navbar-brand" href="#">Menu</a>
+        <a class="col-sm-12 fs-3 fw-bold navbar-brand" [routerLink]="route">Menu</a>
         <div class="col-sm-12 fs-3 fw-bold mt-5" *ngFor="let item of menuOption">
           <a [routerLink]="item.path" class="text-white"> {{ item.name }} </a>
         </div>

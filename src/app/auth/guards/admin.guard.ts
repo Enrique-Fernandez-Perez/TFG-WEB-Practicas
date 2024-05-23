@@ -17,7 +17,7 @@ export class AdminGuard implements CanMatch, CanActivate {
         tap(isAuthenticated => {
         /** TODO comprobar rol de usuario*/
         if(isAuthenticated){
-          if(this.authService.currentUser?.role_id != 3){
+          if(this.authService.currentUser?.role_id != 'administrador'){
             //** TODO cerrar sesion */
             this.router.navigate(['user']);
           }

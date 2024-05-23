@@ -19,4 +19,7 @@ export class SiddebarComponent {
   @Input()
   menuOption : MenuItems[] = [];
 
+  @Input()
+  route : string = '';
+
 }

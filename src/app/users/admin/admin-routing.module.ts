@@ -74,7 +74,7 @@ const routes: Routes = [
           path:'listUser',
           component : ListUsersComponent,
         },
-        
+
         {
           path:'register',
           component : EditUserComponent,

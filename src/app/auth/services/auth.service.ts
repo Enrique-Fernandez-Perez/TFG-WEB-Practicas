@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { enviroments } from 'src/environments/enviroments';
-import { User } from '../interfacess/user';
 import { Observable, catchError, map, of, take, tap } from 'rxjs';
 import { TokenService } from './token.service';
+import { User } from '../interfacess/user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,17 +17,17 @@ export class AuthService {
   constructor( private tokenService: TokenService,) {}
   // User registration
   register(user: User): Observable<any> {
-    return this.http.post(this.baseUrl + 'api/register', user);
+    return this.http.post(this.baseUrl + '/register', user);
   }
   // Login
   signin(user: User): Observable<any> {
-    return this.http.post<any>(this.baseUrl + '/api/login', user);
+    return this.http.post<any>(this.baseUrl + '/login', user);
   }
   
   // Access user profile
   profileUser(): Observable<User> {
     // return this.http.get(this.baseUrl + '/api/user-profile');
-    return this.http.get<User>(this.baseUrl + '/api/me');
+    return this.http.get<User>(this.baseUrl + '/me');
   }
 
   user ?: User;
@@ -45,7 +45,7 @@ export class AuthService {
       'Authorization', "Bearer " + token
     );
 
-    this.http.get<User>(this.baseUrl + '/api/me',{headers}).subscribe(data => this.user = data);
+    this.http.get<User>(this.baseUrl + '/me',{headers}).subscribe(data => this.user = data);
     return this.user;
   }
 

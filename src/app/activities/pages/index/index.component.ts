@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { DropOptionMenu, MenuItems } from '../../../interfaces/menu-item';
+import { TokenService } from 'src/app/auth/services/token.service';
 
 @Component({
   selector: 'app-index',
@@ -34,5 +35,7 @@ export class IndexComponent {
       ]
     }
   ];
+
+  token = inject(TokenService);
 
 }

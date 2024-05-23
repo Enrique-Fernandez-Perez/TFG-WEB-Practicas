@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,4 +27,6 @@ import { SidebarDropComponent } from './components/sidebar-drop/sidebar-drop.com
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  
+}

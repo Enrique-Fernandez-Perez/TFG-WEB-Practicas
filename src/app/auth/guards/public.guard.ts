@@ -20,17 +20,17 @@ export class PublicGuard implements CanMatch, CanActivate {
         //   this.router.navigate(['']);
         // }
         if(isAuthenticated){
-          if(this.authService.currentUser?.role_id == 0){
+          if(this.authService.currentUser?.role_id == 'registrado'){
             //** TODO cerrar sesion */
             this.router.navigate(['']);
           }
-          else if(this.authService.currentUser?.role_id == 1){
+          else if(this.authService.currentUser?.role_id == 'alumno'){
             this.router.navigate(['user']);
           }
-          else if(this.authService.currentUser?.role_id == 2){
+          else if(this.authService.currentUser?.role_id == 'profesor'){
             this.router.navigate(['user']);
           }
-          else if(this.authService.currentUser?.role_id== 3){
+          else if(this.authService.currentUser?.role_id== 'administrador'){
             this.router.navigate(['admin']);
           }
           else{

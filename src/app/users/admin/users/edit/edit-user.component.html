@@ -1,1 +1,21 @@
-<p>edit works!</p>
+<div *ngFor="let user of users">
+  <form class="d-flex text-center m-4 fs-2 fw-bold" [formGroup]="editUsersForm">
+    <div class="my-auto">
+      {{ user.name.charAt(0).toUpperCase() + user.name.substring(1) }}
+    </div>
+
+    <div class="my-auto ms-4">
+      {{ user.email }}
+    </div>
+
+    <select class="my-auto ms-4" formControlName="role_id">
+      <option *ngFor="let rol of roles">
+      {{ rol }}
+      </option>
+    </select>
+
+    <button class="btn btn-danger ms-4" (click)="delete(user.id ?? 0)">Delete</button>
+    <button class="btn btn-info ms-4" (click)="update(user)">Update</button>
+
+  </form>
+</div>

@@ -34,7 +34,7 @@ export class IndexComponent {
 
     {
       name : 'Actividades',
-      path : ''
+      path : '/admin/activities'
     },
 
     {
@@ -49,6 +49,16 @@ export class IndexComponent {
 
     {
       name : 'Mis actividades',
+      path : ''
+    },
+
+    {
+      name : 'Mis actividades',
+      path : ''
+    },
+
+    {
+      name : 'Crear actividad',
       path : ''
     },
   ];

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActividadesService } from '../../services/actividades.service';
 import { Actividades, Img } from '../../interfaces/actividades';
-import { User } from '../../../auth/services/auth.service copy';
+import { User } from 'src/app/auth/interfacess/user';
+// import { User } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-show',

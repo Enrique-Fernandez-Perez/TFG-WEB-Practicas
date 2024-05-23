@@ -35,7 +35,7 @@ export class RegisterPageComponent  implements OnInit {
       },
       () => {
         this.registerForm.reset();
-        this.router.navigate(['login']);
+        this.router.navigate(['/actividades']);
       }
     );
   }

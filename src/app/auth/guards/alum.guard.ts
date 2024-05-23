@@ -17,7 +17,7 @@ export class AlumGuard implements CanMatch, CanActivate {
         tap(isAuthenticated => {
         /** TODO comprobar rol de usuario*/
         if(isAuthenticated){
-          if(this.authService.currentUser?.id != 2){
+          if(this.authService.currentUser?.id != 0){
             //** TODO cerrar sesion */
             this.router.navigate(['user']);
           }
