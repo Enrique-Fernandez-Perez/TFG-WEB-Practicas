@@ -21,8 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(\App\Http\Controllers\UsersController::class)->group(function () {
     Route::get('users', 'index');
-    Route::get('users/register', 'usuersRegister');
+    Route::get('users/register', 'usersRegister');
     Route::get('user/{id}', 'findById');
+    Route::delete('user/{id}', 'delete');
     Route::patch('user/{id}', 'update');
 });
 
