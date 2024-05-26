@@ -13,6 +13,9 @@ import { CreateUserComponent } from './users/create/create-user.component';
 import { ListUsersComponent } from './users/list/list-users.component';
 import { ShowUserComponent } from './users/show/show-user.component';
 import { EditUserComponent } from './users/edit/edit-user.component';
+import { RegistradasComponent } from '../pages/registradas/registradas.component';
+import { FavoritasComponent } from '../pages/favoritas/favoritas.component';
+import { ShowComponent } from 'src/app/activities/pages/show/show.component';
 
 
 const routes: Routes = [
@@ -24,17 +27,26 @@ const routes: Routes = [
         path:'activities',
         component : MyIndexComponent,
       },
-
     ],
   },
 
   {
-    path:'activitie',
+    path:'activities',
     component: IndexComponent,
     children:[
         {
           path:'create',
           component : CreateComponent,
+        },
+
+        {
+          path:'favoritas',
+          component : FavoritasComponent,
+        },
+
+        {
+          path:'inscritas',
+          component : RegistradasComponent,
         },
 
         {
@@ -45,6 +57,11 @@ const routes: Routes = [
         {
           path:'edit/:{id}',
           component : EditComponent,
+        },
+
+        {
+          path:':{id}',
+          component : ShowComponent,
         },
 
         {

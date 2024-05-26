@@ -1,1 +1,11 @@
-<p>list-mine works!</p>
+<div class="d-flex fs-1 fw-bold mt-5 text-center modal-dialog-centered modal-dialog-scrollable">
+  <div class="col-4 my-4 pt-5 fs-1 fw-bold" *ngFor="let actividad of actividades">
+
+    <app-carousel [images]="actividad.images"></app-carousel>
+
+    <h2 class="my-4 fs-1 fw-bold "> {{ actividad.titulo }}</h2>
+    <h2 class="my-4 fs-1 fw-bold "> {{ actividad.organizador.email }}</h2>
+
+    <a class="btn btn-danger rounded fs-1 fw-bold  my-4" routerLink="{{actividad.id}}">Ver detalles</a>
+  </div>
+</div>

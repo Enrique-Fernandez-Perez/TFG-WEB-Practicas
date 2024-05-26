@@ -48,6 +48,9 @@ import { ShowComponent } from './pages/show/show.component';
   providers : [
     ActivitiesModule,
     ActividadesService,
+  ],
+  exports : [
+    CarrouselComponent
   ]
 })
 export class ActivitiesModule { }

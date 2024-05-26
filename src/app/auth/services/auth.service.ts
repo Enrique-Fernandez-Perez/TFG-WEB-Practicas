@@ -23,7 +23,7 @@ export class AuthService {
   signin(user: User): Observable<any> {
     return this.http.post<any>(this.baseUrl + '/login', user);
   }
-  
+
   // Access user profile
   profileUser(): Observable<User> {
     // return this.http.get(this.baseUrl + '/api/user-profile');
@@ -34,13 +34,13 @@ export class AuthService {
 
   getUser(){
     const token = this.tokenService.getToken();
-    
+
     if(!token){
       return false;
     }
 
     const headers = new HttpHeaders();
-    
+
     headers.set(
       'Authorization', "Bearer " + token
     );
@@ -57,11 +57,11 @@ export class AuthService {
   }
 
   checkAuthentication() : Observable<boolean>{
-    if(!localStorage.getItem('token')){
+    if(!localStorage.getItem('auth_token')){
       return of(false);
     }
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth_token');
 
     return this.http.get<User>(`${this.baseUrl}/users/1`)
       .pipe(
@@ -70,7 +70,7 @@ export class AuthService {
         catchError(err => of(false))
         )
   }
-  
+
   /* private user ?: User;
 
   get currentUser() : User| undefined{

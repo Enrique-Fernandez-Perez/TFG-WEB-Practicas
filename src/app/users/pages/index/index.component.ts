@@ -45,7 +45,7 @@ export class IndexComponent {
 
     {
       name : 'Crear actividad',
-      path : ''
+      path : '/user/activitie/create'
     },
 
   ];

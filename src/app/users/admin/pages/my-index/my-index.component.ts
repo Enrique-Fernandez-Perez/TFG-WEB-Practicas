@@ -21,7 +21,7 @@ export class MyIndexComponent {
 
 
   actividades : Actividades[] = [
-    {
+    /* {
       id : 0,
       titulo : 'string',
       descripcion : 'string',
@@ -88,7 +88,7 @@ export class MyIndexComponent {
           file_path:'https://live.staticflickr.com/1008/1065578536_46ce38958c_b.jpg'
         },
       ],
-    },
+    }, */
   ];
 
   private actividadesService = inject(ActividadesService);

@@ -29,7 +29,7 @@ export class IndexComponent {
 
     {
       name : 'Usuarios',
-      path : 'listUser'
+      path : '/admin/users/listUser'
     },
 
     {
@@ -39,27 +39,22 @@ export class IndexComponent {
 
     {
       name : 'Actividades Favoritas',
-      path : ''
+      path : '/admin/activities/favoritas'
     },
 
     {
       name : 'Inscripto en',
-      path : ''
+      path : '/admin/activities/inscritas'
     },
 
     {
       name : 'Mis actividades',
-      path : ''
-    },
-
-    {
-      name : 'Mis actividades',
-      path : ''
+      path : '/admin/activities/mine'
     },
 
     {
       name : 'Crear actividad',
-      path : ''
+      path : '/admin/activities/create'
     },
   ];
 

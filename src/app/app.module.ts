@@ -9,11 +9,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
 import { SidebarDropComponent } from './components/sidebar-drop/sidebar-drop.component';
+import { FavoritasComponent } from './users/pages/favoritas/favoritas.component';
+import { RegistradasComponent } from './users/pages/registradas/registradas.component';
 // import { SiddebarComponent } from './components/siddebar/siddebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FavoritasComponent,
+    RegistradasComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,5 +32,5 @@ import { SidebarDropComponent } from './components/sidebar-drop/sidebar-drop.com
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  
+
 }

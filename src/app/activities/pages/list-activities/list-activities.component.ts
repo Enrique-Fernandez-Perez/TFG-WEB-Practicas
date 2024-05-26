@@ -11,7 +11,7 @@ import { ActividadesService } from '../../services/actividades.service';
 export class ListActivitiesComponent {
 
   actividades : Actividades[] = [
-    {
+   /*  {
       id : 0,
       titulo : 'string',
       descripcion : 'string',
@@ -78,7 +78,7 @@ export class ListActivitiesComponent {
           file_path:'https://live.staticflickr.com/1008/1065578536_46ce38958c_b.jpg'
         },
       ],
-    },
+    }, */
   ];
 
   private actividadesService = inject(ActividadesService);

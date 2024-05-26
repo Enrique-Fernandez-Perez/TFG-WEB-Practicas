@@ -12,26 +12,26 @@ import { AuthStateService } from '../../services/auth-state.service';
   ]
 })
 export class LoginPageComponent implements OnInit {
-  
+
     loginForm: FormGroup;
     errors:any = null;
-  
+
     constructor(
       public router: Router,
       public fb: FormBuilder,
       public authService: AuthService,
       private token: TokenService,
       private authState: AuthStateService
-    ) {    
+    ) {
       this.loginForm = this.fb.group({
         email: [],
         password: [],
       });
-  
+
     }
     ngOnInit() {
     }
-  
+
     onSubmit() {
       this.authService.signin(this.loginForm.value).subscribe(
         (result) => {
@@ -43,10 +43,15 @@ export class LoginPageComponent implements OnInit {
         () => {
           this.authState.setAuthState(true);
           this.loginForm.reset();
-          this.router.navigate(['/actividades']);
+          if(this.authService.user?.role_id == 'administrador'){
+            this.router.navigate(['/admin']);
+          }
+          else{
+            this.router.navigate(['/user']);
+          }
         }
       );
-      
+
     }
     // Handle response
     responseHandler(data:any) {

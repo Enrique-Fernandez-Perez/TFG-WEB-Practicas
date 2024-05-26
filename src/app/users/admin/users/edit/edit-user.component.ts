@@ -50,7 +50,7 @@ export class EditUserComponent {
 
   listUsers(){
     this.users = [];
-    this.usersService.getRegisters().subscribe(data =>{
+    this.usersService.getAll().subscribe(data =>{
       this.users = data;
     });
   }

@@ -36,7 +36,7 @@ export class ListUsersComponent {
 
     this.usersService.update(user).subscribe(
       (result) => {
-        // console.log(result);
+        console.log(result);
       },
       (error) => {
         this.errors = error.error;
@@ -50,7 +50,7 @@ export class ListUsersComponent {
 
   listUsers(){
     this.users = [];
-    this.usersService.getAll().subscribe(data =>{
+    this.usersService.getRegisters().subscribe(data =>{
       this.users = data;
     });
   }
@@ -61,5 +61,4 @@ export class ListUsersComponent {
       }
     );
   }
-
 }

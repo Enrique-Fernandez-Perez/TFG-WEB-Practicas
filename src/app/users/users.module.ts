@@ -9,12 +9,18 @@ import { CreateComponent } from './pages/create/create.component';
 import { IndexComponent } from './pages/index/index.component';
 import { SiddebarComponent } from '../components/sidebar/siddebar.component';
 import { SidebarDropComponent } from '../components/sidebar-drop/sidebar-drop.component';
+import { ListMineComponent } from './pages/list-mine/list-mine.component';
+import { CarrouselComponent } from '../components/carrousel/carrousel.component';
+import { UsersService } from './services/users.service';
+import { ActivitiesModule } from '../activities/activities.module';
 
 
 @NgModule({
   declarations: [
     EditComponent,
     CreateComponent,
+    // CarrouselComponent,
+    ListMineComponent,
   ],
   imports: [
     CommonModule,
@@ -23,9 +29,11 @@ import { SidebarDropComponent } from '../components/sidebar-drop/sidebar-drop.co
     RouterOutlet,
     ReactiveFormsModule,
 
+    ActivitiesModule,
+
     IndexComponent,
     SiddebarComponent,
-    SidebarDropComponent
+    SidebarDropComponent,
   ],
 })
 export class UsersModule { }

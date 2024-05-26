@@ -1,7 +1,12 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { EmailUser } from '../../../auth/interfacess/user';
+import { EmailUser, User } from '../../../auth/interfacess/user';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UsersService } from '../../services/users.service';
+import { ActividadesService } from 'src/app/activities/services/actividades.service';
+import { Actividades, editActividades } from 'src/app/activities/interfaces/actividades';
 // import { Router } from '@angular/router';
 
 @Component({
@@ -14,9 +19,16 @@ export class EditComponent {
 
   private fb = inject(FormBuilder);
 
-  activity = ' ``1 futbol 2024´´';
+  activity !: Actividades;
 
-  users : EmailUser[] = [];
+  users : User[] = [];
+
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private userService = inject(UsersService);
+  private activiadService = inject(ActividadesService);
+  private authStatus = inject(AuthService);
+
 
   // public peticionService = inject(PeticionService)
   // private router = inject(Router);
@@ -48,8 +60,10 @@ export class EditComponent {
       descripcion: new FormControl('', Validators.required),
       organizador: new FormControl('', [Validators.required]),
       fecha: new FormControl(new Date(), Validators.required),
-      file: new FormControl('', Validators.required),
+      // file: new FormControl('', Validators.required),
     });
+    this.loadUsers();
+    this.loadActivitie();
 
    /*  this.getLog(); */
     if(!this.log){
@@ -57,6 +71,17 @@ export class EditComponent {
     }
 
     // TODO  usar service para recoger los usuarios
+  }
+
+  loadForm(item : Actividades){
+    this.editForm = new FormGroup({
+      titulo: new FormControl(item.titulo, [Validators.required]),
+      descripcion: new FormControl(item.descripcion, Validators.required),
+      organizador: new FormControl(item.organizador, [Validators.required]),
+      fecha: new FormControl(new Date(item.fecha), Validators.required),
+      // file: new FormControl('', Validators.required),
+    });
+
   }
 
   /* getLog() {
@@ -78,14 +103,34 @@ export class EditComponent {
    * @return response()
    */
   submit(form : FormGroup){
+    let FFech = form.value.fecha
+    let sendFecha = '';
+    sendFecha = FFech[FFech.length-10] + FFech[FFech.length-9] + FFech[FFech.length-8] + FFech[FFech.length-7];
+    sendFecha += FFech[FFech.length-6];
+    sendFecha += FFech[FFech.length-5] + FFech[FFech.length-4];
+    sendFecha += FFech[FFech.length-3];
+    sendFecha += FFech[FFech.length-2] + FFech[FFech.length-1];
 
-    const formData = new FormData();
+    let actividad : editActividades = {
+      id : this.activity.id,
+      titulo : form.value.titulo,
+      descripcion : form.value.descripcion,
+      organizador : form.value.organizador,
+      fecha : sendFecha,
+    }
 
-    formData.append('titulo',form.value.titulo);
-    formData.append('descripcion',form.value.descripcion);
-    formData.append('destinatario',form.value.destinatario);
-    formData.append('categoria_id',form.value.categoria_id);
-    formData.append('file', this.selectedImage);
+    this.activiadService.edit(actividad).subscribe((result)=>{
+      this.router.navigate(['/admin']);
+      // console.log(result);
+    });
+
+    // const formData = new FormData();
+
+    // formData.append('titulo',form.value.titulo);
+    // formData.append('descripcion',form.value.descripcion);
+    // formData.append('destinatario',form.value.destinatario);
+    // formData.append('categoria_id',form.value.categoria_id);
+    // formData.append('file', this.selectedImage);
 
     // console.log(formData);
 
@@ -103,5 +148,18 @@ export class EditComponent {
       const file = event.target.files[0];
       this.selectedImage = file;
     }
+  }
+
+  loadUsers(){
+    this.userService.getAll().subscribe(data => {this.users = data});
+  }
+
+  loadActivitie(){
+    let id = this.route.snapshot.params['{id}'];
+    this.activiadService.findbyId(id).subscribe(data => {
+      this.activity = data;
+      this.loadForm(data);
+    });
+    // console.log(this.activity);
   }
 }

@@ -5,8 +5,26 @@ export interface Actividades {
   titulo : string;
   descripcion : string;
   organizador : EmailUser;
+  fecha : Date,
   files : Files[];
   images : Img[];
+}
+
+export interface postActividades {
+  titulo : string;
+  descripcion : string;
+  organizador : EmailUser;
+  fecha : Date|string,
+  files ?: Files[];
+}
+
+export interface editActividades {
+  id : number;
+  titulo : string;
+  descripcion : string;
+  organizador : EmailUser;
+  fecha : Date|string,
+  files ?: Files[];
 }
 
 export interface Files {
