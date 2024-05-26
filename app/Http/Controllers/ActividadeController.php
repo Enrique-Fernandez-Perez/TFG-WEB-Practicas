@@ -29,11 +29,6 @@ class ActividadeController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
-
-    public function categorias(Request $request){
-        return $this->index($request);
-    }
-
     public function index(Request $request)
     {
         try {
@@ -76,16 +71,42 @@ class ActividadeController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $input = $request-> all();
+
             $actividad = Actividade::findOrFail($id);
 
-            $user = Auth::user();
-            $rol = $user->role_id;
+//            $user = Auth::user();
+//            $rol = $user->role_id;
+//
+//            if($rol == 'administrador' && $actividad->user_id != $user->id){
+//                return response()->json( ["Error" => "Este usuario no tiene permisos para modificar"], 201);
+//            }
 
-            if($rol == 'administrador' && $actividad->user_id != $user->id){
-                return response()->json( ["Error" => "Este usuario no tiene permisos para modificar"], 201);
+//            $actividad-> update($request-> all());
+            $user = User::find($request->all()['organizador']);
+
+            $actividad->titulo = $request->input('titulo');
+            $actividad->descripcion = $request->input('descripcion');
+//            $actividad->image = $input['file'];
+
+//            $actividad-> user()-> associate($user);
+//            $actividad->organizador = $user->id;
+
+//            $actividad->user()->associate($user->id);
+
+
+            $validator = Validator::make($input,
+                [
+                    'fecha' => 'required',
+                ]);
+            if ($validator->fails()) {
+                $actividad->fecha = Date::now();
+            }
+            else{
+                $actividad->fecha = $input['fecha'];
             }
 
-            $actividad-> update($request-> all());
+            $actividad-> save();
 //            $actividad->save();
             return response()->json( $actividad, 201);
         }
@@ -110,7 +131,8 @@ class ActividadeController extends Controller
 
             $input = $request-> all();
 
-            $user = Auth::user();
+//            $user = Auth::user();
+            $user = User::find($request->all()['organizador']);
 
             $actividad = new Actividade();
 
@@ -120,6 +142,8 @@ class ActividadeController extends Controller
 
 //            $actividad-> user()-> associate($user);
             $actividad->organizador = $user->id;
+
+//            $actividad->user()->associate($user->id);
 
 
             $validator = Validator::make($input,
@@ -145,11 +169,19 @@ class ActividadeController extends Controller
                 $fileModel = new File;
                 $fileModel->peticione_id = $pid;
                 $filename = $pid . '_' . $file->getClientOriginalName();
-                $file->move('storage/files', $filename);
+                $file->move('storage/files/', $filename);
                 $fileModel->name = $filename;
                 $fileModel->file_path = "storage/files" . $filename;
                 $fileModel->save();
             }
+//            else{
+//                $file = new File();
+//                $pid = $actividad->id;
+//                $file->actividades()->associate($pid);
+//                $file->name = 'unless';
+//                $file->file_path = 'unless';
+//                $file->save();
+//            }
 
             return response()->json($actividad,201);
         }
@@ -221,19 +253,19 @@ class ActividadeController extends Controller
     public function delete(Request $request, $id)
     {
         try {
-            $user = Auth::user();
-            $rol = $user->role_id;
+//            $user = Auth::user();
+//            $rol = $user->role_id;
 
             $actividad = Actividade::findOrFail($id);
 
-
+            Actividade::destroy($id);
 //            if($rol === 0 && $actividad->user_id != $user->id){
 //                return response()->json( ["Error" => "Este usuario no tiene permisos para eleminar"], 201);
 //            }
 
-            $this->fileDelete($request,$id);
+//            $this->fileDelete($request,$id);
 
-            $actividad-> delete();
+//            $actividad-> delete();
             return response()->json( $actividad, 201);
         }
         catch (\Exception $exception) {

@@ -34,8 +34,8 @@ Route::controller(\App\Http\Controllers\ActividadeController::class)->group(func
     Route::delete('actividades/{id}', 'delete');
     Route::put('actividades/{id}', 'update');
     Route::post('actividades', 'store');
-    Route::post('actividades/inscribir/{id}', 'addInscription');
-    Route::post('actividades/favorita/{id}', 'addFavorite');
+    Route::post('actividad/inscribir/{id}', 'addInscription');
+    Route::post('actividad/favorita/{id}', 'addFavorite');
     Route::post('actividad/addImage/{id}', 'addImage');
     Route::get('actividades/search/{search}', 'search');
     Route::get('actividades/inscrito', 'actividadesInscritas');

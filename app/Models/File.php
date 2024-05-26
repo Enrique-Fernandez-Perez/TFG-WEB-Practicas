@@ -15,7 +15,7 @@ class File extends Model
         'file_path',
     ];
 
-    public function actividade(){
+    public function actividades(){
         return$this->belongsTo(Actividade::class);
     }
 }

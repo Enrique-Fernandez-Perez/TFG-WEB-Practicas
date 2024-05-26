@@ -26,10 +26,10 @@ class Actividade extends Model
     }
 
     public function favoritas(){
-        return $this->belongsTo('App\Models\Favorita');
+        return $this->hasMany('App\Models\Favorita');
     }
 
     public function inscipciones(){
-        return $this->belongsTo('App\Models\Inscripcione');
+        return $this->hasMany('App\Models\Inscripcione');
     }
 }

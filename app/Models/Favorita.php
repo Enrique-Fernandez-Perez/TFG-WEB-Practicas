@@ -19,10 +19,10 @@ class Favorita extends Model
         'actividade_id'
     ];
 
-    public function users(){
-        return $this->hasOne('App\Models\User');
+    public function user(){
+        return $this->belongsTo('App\Models\User');
     }
-    public function actividades(){
-        return $this->hasOne('App\Models\Actividade');
+    public function actividade(){
+        return $this->belongsTo('App\Models\Actividade');
     }
 }
