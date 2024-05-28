@@ -16,11 +16,15 @@ export class AdminGuard implements CanMatch, CanActivate {
       .pipe(
         tap(isAuthenticated => {
         /** TODO comprobar rol de usuario*/
-        if(isAuthenticated){
+        if(!isAuthenticated){
           if(this.authService.currentUser?.role_id != 'administrador'){
             //** TODO cerrar sesion */
-            this.router.navigate(['user']);
+            this.router.navigate(['/user']);
           }
+          // if(this.authService.currentUser?.role_id == 'administrador'){
+          //   //** TODO cerrar sesion */
+          //   this.router.navigate(['/admin']);
+          // }
         }
       }),
       map(isAuthenticated => !isAuthenticated)

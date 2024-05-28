@@ -3,40 +3,31 @@ import { RouterModule, Routes } from '@angular/router';
 import { Error404PageComponent } from './shared/pages/error404-page/error404-page.component';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { PublicGuard } from './auth/guards/public.guard';
+import { AdminGuard } from './auth/guards/admin.guard';
+import { RediretUserGuard } from './auth/guards/rediret-user.guard';
+import { RediretAdminGuard } from './auth/guards/rediret-admin.guard';
 
 const routes: Routes = [
   {
     path:'auth',
     loadChildren : ()=>import('./auth/auth.module').then(m=> m.AuthModule),
-    // canActivate: [ PublicGuard ],
-    // canMatch: [ PublicGuard ],
   },
 
   {
     path:'user',
     loadChildren : ()=>import('./users/users.module').then(m=> m.UsersModule),
-    // canActivate: [ PublicGuard ],
-    // canMatch: [ PublicGuard ],
-
-    // canActivate: [ AuthGuard ],
-    // canMatch: [ AuthGuard ],
+    canActivate : [RediretUserGuard]
   },
 
   {
     path:'admin',
     loadChildren : ()=>import('./users/admin/admin.module').then(m=> m.AdminModule),
-    // canActivate: [ PublicGuard ],
-    // canMatch: [ PublicGuard ],
-
-    // canActivate: [ AuthGuard ],
-    // canMatch: [ AuthGuard ],
+    canActivate : [RediretAdminGuard]
   },
 
   {
     path:'activities',
     loadChildren : ()=>import('./activities/activities.module').then(m => m.ActivitiesModule),
-    // canActivate: [ PublicGuard ],
-    // canMatch: [ PublicGuard ],
   },
 
   {

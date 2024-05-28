@@ -27,7 +27,17 @@ export class AuthService {
   // Access user profile
   profileUser(): Observable<User> {
     // return this.http.get(this.baseUrl + '/api/user-profile');
-    return this.http.get<User>(this.baseUrl + '/me');
+
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        // 'Content-Type' : 'multipart/form-data',
+        'Accept':'application/json',
+        'Authorization': "Bearer " + this.tokenService.getToken()
+      })
+    }
+
+    return this.http.get<User>(this.baseUrl + '/me', httpOptions);
   }
 
   user ?: User;
@@ -39,31 +49,71 @@ export class AuthService {
       return false;
     }
 
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        // 'Content-Type' : 'multipart/form-data',
+        'Accept':'application/json',
+        'Authorization': "Bearer " + this.tokenService.getToken()
+      })
+    }
+
+    this.http.get<User>(this.baseUrl + '/me', httpOptions).subscribe(data => {this.user = data; console.log(data); return data;});
+    return this.user;
+  }
+
+  getAuth(){
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+        'Authorization': "Bearer " + this.tokenService.getToken()
+      })
+    }
+
+    return this.http.get<User>(this.baseUrl + '/me', httpOptions);
+  }
+
+  get currentUser() : User| undefined{
+    // if(!this.user){
+    //   return undefined;
+    // }
+    // return structuredClone(this.user);
+    const token = localStorage.getItem('auth_token');
+
+    if(!token){
+      return undefined;
+    }
+
     const headers = new HttpHeaders();
 
     headers.set(
       'Authorization', "Bearer " + token
     );
 
-    this.http.get<User>(this.baseUrl + '/me',{headers}).subscribe(data => this.user = data);
-    return this.user;
-  }
+    let userAuth !: User;
 
-  get currentUser() : User| undefined{
-    if(!this.user){
-      return undefined;
-    }
-    return structuredClone(this.user);
+    this.http.get<User>(`${this.baseUrl}/me`, {headers}).subscribe(data=>{
+      userAuth = data;
+    })
+    return userAuth;
   }
 
   checkAuthentication() : Observable<boolean>{
+
     if(!localStorage.getItem('auth_token')){
       return of(false);
     }
 
     const token = localStorage.getItem('auth_token');
 
-    return this.http.get<User>(`${this.baseUrl}/users/1`)
+    const headers = new HttpHeaders();
+
+    headers.set(
+      'Authorization', "Bearer " + token
+    );
+
+    return this.http.get<User>(`${this.baseUrl}/me`, {headers})
       .pipe(
         tap(user=> this.user = user),
         map(user => !!user),

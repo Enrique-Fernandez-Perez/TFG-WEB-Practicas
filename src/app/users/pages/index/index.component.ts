@@ -25,7 +25,7 @@ export class IndexComponent {
   menuOption : MenuItems[] = [
     {
       name : 'Actividades',
-      path : ''
+      path : '/user/activities'
     },
 
     {
@@ -40,7 +40,7 @@ export class IndexComponent {
 
     {
       name : 'Mis actividades',
-      path : ''
+      path : '/user/activitie/mine'
     },
 
     {

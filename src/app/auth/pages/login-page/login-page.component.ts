@@ -43,12 +43,13 @@ export class LoginPageComponent implements OnInit {
         () => {
           this.authState.setAuthState(true);
           this.loginForm.reset();
-          if(this.authService.user?.role_id == 'administrador'){
-            this.router.navigate(['/admin']);
-          }
-          else{
-            this.router.navigate(['/user']);
-          }
+          // console.log(this.authService.currentUser);
+          this.router.navigate(['/admin']);
+          // if(this.authService.user?.role_id == 'administrador'){
+          // }
+          // else{
+          //   this.router.navigate(['/user']);
+          // }
         }
       );
 

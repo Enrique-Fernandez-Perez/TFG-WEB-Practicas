@@ -9,6 +9,7 @@ import { EditComponent } from './pages/edit/edit.component';
 import { AddImageComponent } from './pages/add-image/add-image.component';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { PublicGuard } from '../auth/guards/public.guard';
+import { ListActivitiesComponent } from '../activities/pages/list-activities/list-activities.component';
 
 const routes: Routes = [
 
@@ -38,8 +39,7 @@ const routes: Routes = [
     children:[
       {
         path:'activities',
-        component : MyIndexComponent,
-        canActivate : [PublicGuard],
+        component : ListActivitiesComponent,
       },
     ],
   },
